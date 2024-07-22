@@ -1,0 +1,46 @@
+<!-- loginPage.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+<h2>Login</h2>
+<form id="loginForm" onsubmit="handleLogin(event)">
+    <label for="username">Username:</label><br>
+    <input type="text" id="username" name="username"><br>
+    <label for="password">Password:</label><br>
+    <input type="password" id="password" name="password"><br><br>
+    <button type="submit">Login</button>
+</form>
+
+<script>
+    function handleLogin(event) {
+        event.preventDefault();
+
+        fetch('/login', {
+            method: 'POST',
+            body: new FormData(document.getElementById('loginForm')),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.access) {
+                // Access 토큰을 로컬 스토리지에 저장
+                sessionStorage.setItem('accessToken', data.access);
+
+                // 메인 페이지로 리디렉션
+                window.location.href = '/';
+            } else {
+                console.error('Login failed: No access token');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+</body>
+</html>

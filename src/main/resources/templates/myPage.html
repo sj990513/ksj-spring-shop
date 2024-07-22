@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Page</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+<h1>My Page</h1>
+<div>
+    <label>ID: </label>
+    <span th:text="${memberDto.ID}"></span>
+</div>
+<div>
+    <label>Username: </label>
+    <span th:text="${memberDto.username}"></span>
+</div>
+<div>
+    <label>Nickname: </label>
+    <span th:text="${memberDto.nickname}"></span>
+</div>
+<div>
+    <label>Email: </label>
+    <span th:text="${memberDto.email}"></span>
+</div>
+<div>
+    <label>Phone: </label>
+    <span th:text="${memberDto.phone}"></span>
+</div>
+<div>
+    <label>Address: </label>
+    <span th:text="${memberDto.address}"></span>
+</div>
+<div>
+    <label>Creation Date: </label>
+    <span th:text="${#dates.format(memberDto.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+</div>
+<div>
+    <label>Role: </label>
+    <span th:text="${memberDto.role}"></span>
+</div>
+</body>
+</html>
+
+<script>
+    // Access 토큰 만료 여부 확인 및 재발급 요청
+    function checkAccessToken() {
+        var accessToken = localStorage.getItem('accessToken');
+        console.log('Access Token:', accessToken);
+
+        if (accessToken) {
+            var jwt_payload = JSON.parse(atob(accessToken.split('.')[1]));
+            var exp = jwt_payload.exp * 1000; // Convert to milliseconds
+            var current_time = new Date().getTime();
+            if (current_time > exp) {
+                // access토큰 만료 재발급 요청
+                reissueAccessToken();
+            }
+        }
+    }
+
+    // Access 토큰 재발급 요청
+    function reissueAccessToken() {
+        fetch('/reissue', {
+            method: 'POST',
+        })
+        .then(response => {
+            if (response.ok) {
+                const newAccessToken = response.headers.get('access');
+                if (newAccessToken) {
+                    // 로컬스토리지에 새로발급받은 accesstoken 저장
+                    localStorage.setItem('accessToken', newAccessToken);
+                    console.log('New access token received:', newAccessToken);
+                }
+            } else {
+                console.error('Failed to reissue access token:', response.status);
+            }
+        })
+        .catch(error => {
+            console.error('Error occurred while reissuing access token:', error);
+        });
+    }
+
+    // Check access token when the page loads
+    window.onload = function () {
+        checkAccessToken();
+    };
+</script>

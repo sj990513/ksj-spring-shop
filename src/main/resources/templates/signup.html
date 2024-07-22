@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sign Up</title>
+    <script>
+        var isPhoneVerified = false; // Variable to track phone verification status
+
+        function concatenatePhoneNumber() {
+            var part1 = document.getElementById("phonePart1").value;
+            var part2 = document.getElementById("phonePart2").value;
+            var part3 = document.getElementById("phonePart3").value;
+            document.getElementById("phone").value = part1 + part2 + part3;
+        }
+
+        function concatenateEmail() {
+            var emailPrefix = document.getElementById("emailPrefix").value;
+            var emailSuffix = document.getElementById("emailSuffix").value;
+            document.getElementById("email").value = emailPrefix + "@" + emailSuffix;
+        }
+
+        function onEmailSuffixChange() {
+            var emailSuffix = document.getElementById("emailSuffixSelect").value;
+            if (emailSuffix === "custom") {
+                document.getElementById("customEmailSuffix").style.display = "inline";
+                document.getElementById("customEmailSuffix").value = "";
+            } else {
+                document.getElementById("customEmailSuffix").style.display = "none";
+                document.getElementById("emailSuffix").value = emailSuffix;
+            }
+        }
+
+        function sendVerificationCode() {
+            concatenatePhoneNumber();
+            var phoneNumber = document.getElementById("phone").value;
+
+            // AJAX request to send verification code
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/join/send-code", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = xhr.responseText;
+                    alert(response);
+                }
+            };
+            xhr.send(JSON.stringify({ phoneNumber: phoneNumber }));
+        }
+
+        function validateVerificationCode() {
+            concatenatePhoneNumber();
+            var phoneNumber = document.getElementById("phone").value;
+            var code = document.getElementById("verificationCode").value;
+
+            // AJAX request to validate verification code
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/join/auth", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = xhr.responseText;
+                    alert(response);
+                    if (response.includes("핸드폰 인증 성공")) {
+                        isPhoneVerified = true; // Update verification status
+                        checkFormValidity(); // Check if the entire form is valid
+                    } else {
+                        isPhoneVerified = false; // Update verification status
+                        document.getElementById("submitButton").disabled = true; // Ensure submit button is disabled
+                    }
+                }
+            };
+            xhr.send(JSON.stringify({ phoneNumber: phoneNumber, code: code }));
+        }
+
+        function checkFormValidity() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            var nickname = document.getElementById("nickname").value;
+            var emailPrefix = document.getElementById("emailPrefix").value;
+            var emailSuffix = document.getElementById("emailSuffix").value;
+            var phonePart1 = document.getElementById("phonePart1").value;
+            var phonePart2 = document.getElementById("phonePart2").value;
+            var phonePart3 = document.getElementById("phonePart3").value;
+            var address = document.getElementById("address").value;
+
+            var isUsernameValid = username.length >= 6 && username.length <= 20;
+            var isPasswordValid = password.length >= 8;
+            var isNicknameValid = nickname.length >= 2 && nickname.length <= 15;
+
+            if (isUsernameValid && isPasswordValid && isNicknameValid && emailPrefix && emailSuffix && phonePart1 && phonePart2 && phonePart3 && address && isPhoneVerified) {
+                document.getElementById("submitButton").disabled = false;
+            } else {
+                document.getElementById("submitButton").disabled = true;
+            }
+        }
+
+        function onInputChange() {
+            concatenatePhoneNumber();
+            concatenateEmail();
+            checkFormValidity();
+        }
+
+    </script>
+</head>
+<body>
+<h1>회원가입</h1>
+
+<form th:action="@{/join}" th:object="${memberDto}" method="post" onsubmit="concatenatePhoneNumber(); concatenateEmail();">
+
+    <!-- Username -->
+    <div>
+        <label for="username">아이디: </label>
+        <input type="text" id="username" th:field="*{username}" oninput="onInputChange()" pattern=".{6,20}" placeholder="아이디는 6자에서 20자 사이여야 합니다." required />
+    </div>
+
+    <!-- Password -->
+    <div>
+        <label for="password">비밀번호: </label>
+        <input type="password" id="password" th:field="*{password}" oninput="onInputChange()" pattern=".{8,}" placeholder="비밀번호는 최소 8자 이상이어야 합니다." required />
+    </div>
+
+    <!-- Nickname -->
+    <div>
+        <label for="nickname">닉네임: </label>
+        <input type="text" id="nickname" th:field="*{nickname}" oninput="onInputChange()" pattern=".{2,15}" placeholder="닉네임은 2자에서 15자 사이여야 합니다." required />
+    </div>
+
+    <!-- Email -->
+    <div>
+        <label for="email">이메일:</label>
+        <input type="text" id="emailPrefix" placeholder="이메일" oninput="onInputChange()" required />@
+        <select id="emailSuffixSelect" onchange="onEmailSuffixChange(); onInputChange()" required>
+            <option value="naver.com">naver.com</option>
+            <option value="gmail.com">gmail.com</option>
+            <option value="yahoo.com">yahoo.com</option>
+            <option value="직접입력">Custom</option>
+        </select>
+        <input type="text" id="customEmailSuffix" style="display: none;" placeholder="example.com" oninput="document.getElementById('emailSuffix').value=this.value; onInputChange()" />
+        <input type="hidden" id="emailSuffix" value="naver.com" />
+        <input type="hidden" id="email" th:field="*{email}" />
+    </div>
+
+    <!-- Phone Number -->
+    <div>
+        <label for="phone">핸드폰번호:</label>
+        <input type="text" id="phonePart1" maxlength="3" placeholder="xxx" oninput="onInputChange()" required />-
+        <input type="text" id="phonePart2" maxlength="4" placeholder="xxxx" oninput="onInputChange()" required />-
+        <input type="text" id="phonePart3" maxlength="4" placeholder="xxxx" oninput="onInputChange()" required />
+        <input type="hidden" id="phone" th:field="*{phone}" />
+        <button type="button" onclick="sendVerificationCode()">인증번호전송</button>
+    </div>
+
+    <!-- Verification Code -->
+    <div>
+        <label for="verificationCode">인증번호:</label>
+        <input type="text" id="verificationCode" oninput="onInputChange()" required />
+        <button type="button" onclick="validateVerificationCode()">인증번호확인</button>
+    </div>
+
+    <!-- Address -->
+    <div>
+        <label for="address">주소: </label>
+        <input type="text" id="address" th:field="*{address}" oninput="onInputChange()" required />
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" id="submitButton" disabled>회원가입</button>
+</form>
+
+<!-- JavaScript to show alert if there is an error message -->
+<script th:inline="javascript">
+    var errorMessage = [[${errorMessage}]];
+    if (errorMessage) {
+        alert(errorMessage);
+    }
+    /*]]>*/
+</script>
+</body>
+</html>
