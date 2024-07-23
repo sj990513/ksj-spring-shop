@@ -121,11 +121,12 @@ public class MemberController {
     }
 
     //회원삭제
-    @DeleteMapping("/userInfo/user/delete-user")
+    @DeleteMapping("/user-info/user/delete-user")
     public ResponseEntity<?> deleteUser() {
 
         //현재 로그인중인 사용자
         MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
 
         return new ResponseEntity<>(memberService.deleteUser(memberDto), HttpStatus.OK);
     }
