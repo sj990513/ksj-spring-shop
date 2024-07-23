@@ -5,6 +5,8 @@ import MainScreen from './components/MainScreen';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Logout from './components/Logout';
+import MyPage from './components/MyPage'; 
+import ItemList from './components/ItemList';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 
 const onNaverLogin = () => {
@@ -15,18 +17,6 @@ const onGoogleLogin = () => {
   window.location.href = "http://localhost:8080/oauth2/authorization/google";
 };
 
-const getData = () => {
-  fetch("http://localhost:8080", {
-    method: "GET",
-    credentials: 'include'
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      alert(data);
-    })
-    .catch((error) => alert(error));
-};
-
 function App() {
   return (
     <AuthProvider>
@@ -35,7 +25,7 @@ function App() {
           <nav>
             <ul>
               <li>
-                <NavLink exact to="/" activeClassName="active">Home</NavLink>
+                <NavLink exact to="/" activeClassName="active">메인</NavLink>
               </li>
               <AuthContext.Consumer>
                 {({ isLoggedIn }) => (
@@ -43,17 +33,22 @@ function App() {
                     {!isLoggedIn && (
                       <>
                         <li>
-                          <NavLink to="/login" activeClassName="active">Login</NavLink>
+                          <NavLink to="/login" activeClassName="active">로그인</NavLink>
                         </li>
                         <li>
-                          <NavLink to="/signup" activeClassName="active">Signup</NavLink>
+                          <NavLink to="/signup" activeClassName="active">회원가입</NavLink>
                         </li>
                       </>
                     )}
                     {isLoggedIn && (
-                      <li>
-                        <Logout />
-                      </li>
+                      <>
+                        <li>
+                          <NavLink to="/mypage" activeClassName="active">마이페이지</NavLink>
+                        </li>
+                        <li>
+                          <Logout />
+                        </li>
+                      </>
                     )}
                   </>
                 )}
@@ -64,6 +59,8 @@ function App() {
             <Route exact path="/" component={MainScreen} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
+            <Route path="/mypage" component={MyPage} /> 
+            <Route path="/item-list" component={ItemList} />
           </Switch>
         </div>
       </Router>

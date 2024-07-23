@@ -17,7 +17,7 @@ function Logout() {
         alert("로그아웃");
 
         // Refresh the page
-        window.location.reload();
+        window.location.href="/";
       })
       .catch(error => {
         console.error('There was an error logging out!', error);
@@ -25,7 +25,7 @@ function Logout() {
   };
 
   return (
-    <button onClick={handleLogout}>Logout</button>
+    <button onClick={handleLogout}>로그아웃</button>
   );
 }
 

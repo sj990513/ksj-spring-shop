@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../axiosInstance';
+import { Link } from 'react-router-dom';
 
 function MainScreen() {
   const [user, setUser] = useState(null);
@@ -31,7 +32,11 @@ function MainScreen() {
           <p>{message}</p>
         </div>
       )}
+      <Link to="/item-list">
+        <button>상품목록</button>
+      </Link>
     </div>
+    
   );
 }
 
