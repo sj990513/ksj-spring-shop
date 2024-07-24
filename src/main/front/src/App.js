@@ -7,6 +7,7 @@ import Signup from './components/Signup';
 import Logout from './components/Logout';
 import MyPage from './components/MyPage'; 
 import ItemList from './components/ItemList';
+import ItemDetail from './components/ItemDetail';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 
 const onNaverLogin = () => {
@@ -61,6 +62,7 @@ function App() {
             <Route path="/signup" component={Signup} />
             <Route path="/mypage" component={MyPage} /> 
             <Route path="/item-list" component={ItemList} />
+            <Route path="/item-detail/:itemId" component={ItemDetail} />
           </Switch>
         </div>
       </Router>

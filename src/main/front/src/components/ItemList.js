@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
 import './ItemList.css';
 
@@ -74,12 +75,13 @@ const ItemList = () => {
       <div className="item-list">
         {items.map((item) => (
           <div key={item.id} className="item">
-            <img src={item.imageUrl} alt={item.name} className="item-image" />
-            <h3>{item.name}</h3>
-            <p>{item.description}</p>
-            <p>
-              <strong>가격:</strong> {item.price}원
-            </p>
+            <Link to={`/item-detail/${item.id}`}>
+              <img src={item.imageUrl} alt={item.itemname} className="item-image" />
+              <p className="item-name">{item.itemname}</p>
+              <p className="item-price">
+                <strong>가격:</strong> {item.price}원
+              </p>
+            </Link>
           </div>
         ))}
       </div>
