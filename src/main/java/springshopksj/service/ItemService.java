@@ -41,6 +41,7 @@ public class ItemService {
         ReviewDto reviewDto = modelMapper.map(review, ReviewDto.class);
         reviewDto.setItemID(review.getItem().getID());
         reviewDto.setUserID(review.getMember().getID());
+        reviewDto.setUserNickname(review.getMember().getNickname());
         return reviewDto;
     }
 
@@ -89,7 +90,7 @@ public class ItemService {
         return findByCategoryAndSearch.map(this::convertToItemDto);
     }
 
-    // itemId로 아이템값 찾기
+    // itemId로 아이템디테일값 찾기
     public ItemDetailDto findItemDetail(long itemId) {
 
         Item item = itemRepository.findById(itemId)

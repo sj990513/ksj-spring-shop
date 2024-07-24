@@ -134,6 +134,7 @@ public class ItemController {
     public ResponseEntity<?> addReview(@PathVariable(name = "itemId") long itemId,
                                        @RequestBody ReviewDto reviewDto) {
 
+
         //로그인중인 사용자
         MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
@@ -152,6 +153,8 @@ public class ItemController {
                                    @PathVariable(name = "reviewId") long reviewId) {
         //로그인중인 사용자
         MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        System.out.println("접근");
 
         String message = itemService.deleteReview(memberDto, itemId, reviewId);
 

@@ -16,4 +16,5 @@ public class ReviewDto {
     private LocalDateTime createDate;
     private long itemID;
     private long userID;
+    private String userNickname;
 }
