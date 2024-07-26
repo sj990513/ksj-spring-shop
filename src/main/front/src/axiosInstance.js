@@ -15,7 +15,6 @@ axiosInstance.interceptors.request.use(
     }
     return config;
   },
-  
   error => {
     return Promise.reject(error);
   }
@@ -27,11 +26,11 @@ axiosInstance.interceptors.response.use(
   async error => {
     const originalRequest = error.config;
 
+    // If error response status is 401 and not retried yet
     if (error.response.status === 401 && !originalRequest._retry && error.response.data === 'access token expired') {
       originalRequest._retry = true;
 
       try {
-
         // Attempt to refresh the token
         const response = await axiosInstance.post('/reissue');
         const newAccessToken = response.headers['access'];
@@ -43,6 +42,9 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (reissueError) {
         console.error('Token reissue failed', reissueError);
+
+        // 재요청 불가하게 access헤더 제거
+        localStorage.removeItem('access');
         // Redirect to login if refresh token has expired
         window.location.href = '/login';
       }
