@@ -68,31 +68,7 @@ public class ItemController {
         return new ResponseEntity<>(findByCategory, HttpStatus.OK);
     }
 
-    //아이템 추가 - 관리자만 가능
-    /**
-     * itemDto
-     * {
-     *     "itemname": "Example 관리자",
-     *     "price": 100,
-     *     "stock": 50,
-     *     "category": "top",
-     *     "description": "This is an example item.",
-     *     "imageUrl": "http://example.com/image.jpg"
-     * }
-     */
-    @PostMapping("/add-item")
-    public ResponseEntity<?> addItem(@RequestBody ItemDto itemDto) {
-
-        //현재 로그인중인 사용자
-        MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-
-        String message = itemService.addItem(itemDto, memberDto);
-
-        return new ResponseEntity<>(message, HttpStatus.OK);
-    }
-
-
-    //아이템 상세보기 - 로그인필요, 리뷰 리스트도 추가해서 전달
+    // 아이템 상세보기 - 로그인필요, 리뷰 리스트도 추가해서 전달
     /**
      * http://localhost:8080/items/3
      */
@@ -120,7 +96,7 @@ public class ItemController {
         return new ResponseEntity<>(allReview, HttpStatus.OK);
     }
 
-    // 상품 리뷰 생성 (배송완료 제품만 리뷰 가능)
+    // 상품 리뷰 생성 - 배송완료 제품만 리뷰 가능
     /**
      * http://localhost:8080/items/3/review/add-review
      *
@@ -144,7 +120,7 @@ public class ItemController {
     }
 
 
-    // 리뷰삭제 - 리뷰 작성자 본인 + 관리자 삭제가능하게, admincontroller에도 리뷰삭제 추가
+    // 리뷰삭제 - 리뷰 작성자 본인 + 관리자 삭제가능
     /**
      * http://localhost:8080/items/3/review/6/delete-review
      */
@@ -153,8 +129,6 @@ public class ItemController {
                                    @PathVariable(name = "reviewId") long reviewId) {
         //로그인중인 사용자
         MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-
-        System.out.println("접근");
 
         String message = itemService.deleteReview(memberDto, itemId, reviewId);
 
@@ -201,63 +175,6 @@ public class ItemController {
 
         return new ResponseEntity<>(saveQnaDto, HttpStatus.OK);
     }
-
-
-    // 아이템 수정 - 로그인필요
-    /**
-     * http://localhost:8080/items/3/update
-     *
-     * itemDto
-     * {
-     *     "itemname": "Example 관리자",
-     *     "price": 100,
-     *     "stock": 50,
-     *     "category": "top",
-     *     "description": "This is an example item.",
-     *     "imageUrl": "http://example.com/image.jpg"
-     * }
-     */
-    @PatchMapping("/{itemId}/update")
-    public ResponseEntity<?> updateItem(@PathVariable(name = "itemId") long itemId,
-                                        @RequestBody ItemDto itemDto) {
-
-        //현재 로그인중인 사용자
-        MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-
-        ItemDto updateItem = itemService.updateItem(itemId, itemDto, memberDto);
-
-        return new ResponseEntity<>(updateItem, HttpStatus.OK);
-    }
-
-
-    // 상품삭제 - 로그인필요 (작성자 본인만 삭제가능)
-    /**
-     * http://localhost:8080/items/3/delete-item
-     *
-     * itemDto
-     * {
-     *     "itemname": "Example 관리자",
-     *     "price": 100,
-     *     "stock": 50,
-     *     "category": "top",
-     *     "description": "This is an example item.",
-     *     "imageUrl": "http://example.com/image.jpg"
-     * }
-     */
-    @DeleteMapping("/{itemId}/delete-item")
-    public ResponseEntity<?> deleteItem(@PathVariable(name = "itemId") long itemId) {
-
-        //현재 로그인중인 사용자
-        MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-
-        String message = itemService.deleteItem(itemId, memberDto);
-
-        if(message.equals("삭제성공"))
-            return new ResponseEntity<>(message, HttpStatus.OK);
-
-        return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
-    }
-
 }
 
 
