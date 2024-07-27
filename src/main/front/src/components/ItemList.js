@@ -90,7 +90,7 @@ const ItemList = () => {
           이전
         </button>
         <span>
-          페이지 {page} of {totalPages}
+          페이지 {page} / {totalPages}
         </span>
         <button onClick={() => handlePageChange(page + 1)} disabled={page === totalPages}>
           다음

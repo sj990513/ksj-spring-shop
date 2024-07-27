@@ -1,6 +1,6 @@
 /* MyPage.css */
 .mypage-container {
-  max-width: 800px;
+  max-width: 1300px; /* 전체 컨테이너의 최대 너비를 증가시킵니다 */
   margin: 0 auto;
   padding: 40px;
   border: 1px solid #ddd;
@@ -113,4 +113,55 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   margin-bottom: 10px;
+}
+
+.mypage-container {
+  display: flex;
+}
+
+.sidebar {
+  width: 200px;
+  border-right: 1px solid #ddd;
+  padding-right: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 10px 0;
+  cursor: pointer;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Additional styles for PersonalInfo, OrderStatus, and Cart */
+
+.personal-info,
+.order-status,
+.cart {
+  max-width: 1300px; /* 메인 컨텐츠 박스의 최대 너비를 증가시킵니다 */
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.personal-info h2,
+.order-status h2,
+.cart h2 {
+  margin-bottom: 20px;
 }
