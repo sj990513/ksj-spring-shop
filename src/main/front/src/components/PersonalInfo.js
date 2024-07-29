@@ -183,11 +183,11 @@ const PersonalInfo = ({ userData, setUserData }) => {
       <h2>개인정보</h2>
       <div className="user-info">
         <div className="form-group">
-          <label><strong>아이디:</strong></label>
+          <label><strong>아이디</strong></label>
           <p>{userData.username}</p>
         </div>
         <div className="form-group">
-          <label><strong>닉네임:</strong></label>
+          <label><strong>닉네임</strong></label>
           {isEditing ? (
             <>
               <input
@@ -210,7 +210,7 @@ const PersonalInfo = ({ userData, setUserData }) => {
           )}
         </div>
         <div className="form-group">
-          <label><strong>비밀번호:</strong></label>
+          <label><strong>비밀번호</strong></label>
           {isEditing ? (
             <>
               <input
@@ -244,7 +244,7 @@ const PersonalInfo = ({ userData, setUserData }) => {
           <p className="error-text">비밀번호는 6자리 이상이어야 합니다.</p>
         )}
         <div className="form-group">
-          <label><strong>이메일:</strong></label>
+          <label><strong>이메일</strong></label>
           {isEditing ? (
             <>
               <input
@@ -267,11 +267,11 @@ const PersonalInfo = ({ userData, setUserData }) => {
           )}
         </div>
         <div className="form-group">
-          <label><strong>핸드폰:</strong></label>
+          <label><strong>핸드폰</strong></label>
           <p>{userData.phone}</p>
         </div>
         <div className="form-group">
-          <label><strong>주소:</strong></label>
+          <label><strong>주소</strong></label>
           {isEditing ? (
             <input
               type="text"
@@ -285,11 +285,11 @@ const PersonalInfo = ({ userData, setUserData }) => {
           )}
         </div>
         <div className="form-group">
-          <label><strong>권한:</strong></label>
+          <label><strong>권한</strong></label>
           <p>{getRoleDisplayName(userData.role)}</p>
         </div>
         <div className="form-group">
-          <label><strong>가입일:</strong></label>
+          <label><strong>가입일</strong></label>
           <p>{new Date(userData.createDate).toLocaleDateString()}</p>
         </div>
       </div>
