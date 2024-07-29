@@ -19,4 +19,6 @@ public class OrderItemDto {
     private int count;
     private long orderID;
     private long itemID;
+    private String itemName;
+    private String imageUrl;
 }

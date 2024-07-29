@@ -33,6 +33,8 @@ public class OrderService {
         OrderItemDto orderItemDto = modelMapper.map(orderItem, OrderItemDto.class);
         orderItemDto.setOrderID(orderItem.getOrder().getID());
         orderItemDto.setItemID(orderItem.getItem().getID());
+        orderItemDto.setItemName(orderItem.getItem().getItemname());
+        orderItemDto.setImageUrl(orderItem.getItem().getImageUrl());
         return orderItemDto;
     }
 
@@ -136,6 +138,42 @@ public class OrderService {
         List<OrderItemDto> cartDto = cart.stream().map(this::convertToOrderItemDto).collect(Collectors.toList());
 
         return cartDto;
+    }
+
+    // 장바구니 목록 수정
+    public List<OrderItemDto> updateCartItems(MemberDto memberDto, List<OrderItemDto> orderItemDtos) {
+
+        List<OrderItemDto> updatedOrderItemDtos = new ArrayList<>();
+        long updateTotalprice = 0;
+
+        for (OrderItemDto orderItemDto : orderItemDtos) {
+
+            OrderItem orderItem = orderItemRepository.findById(orderItemDto.getID())
+                    .orElseThrow(() -> new RuntimeException("삭제할 상품이 존재하지 않습니다."));
+
+            Item item = itemRepository.findById(orderItemDto.getItemID())
+                    .orElseThrow(() -> new RuntimeException("해당 상품이 존재하지 않습니다."));
+
+            if(item.getStock() < orderItem.getCount()) {
+                throw new RuntimeException("해당 상품의 재고가 남아있지 않습니다.: " + item.getItemname());
+            }
+
+            updateTotalprice += (orderItemDto.getCount() * orderItem.getOrderprice());
+
+            orderItem.setCount(orderItemDto.getCount());
+            orderItemRepository.save(orderItem);
+
+            OrderItemDto updatedOrderItemDto = convertToOrderItemDto(orderItem);
+            updatedOrderItemDtos.add(updatedOrderItemDto);
+        }
+
+        //수정된 상품가격 저장
+        Order order = orderRepository.findById(orderItemRepository.findById(orderItemDtos.get(0).getID()).get().getOrder().getID())
+                .orElseThrow(() -> new RuntimeException("해당 상품이 존재하지 않습니다."));
+        order.setTotalprice(updateTotalprice);
+        orderRepository.save(order);
+
+        return updatedOrderItemDtos;
     }
 
     // 장바구니 품목 삭제
@@ -317,28 +355,22 @@ public class OrderService {
     // orderId로 모든 order 디테일 찾기 - 주문상세보기 (order, orderItems, payment, delivery)
     public OrderResponse findOrderDetailByOrderId(MemberDto memberDto, long orderId) {
 
-        String message = "주문에 해당하는 상세정보를 찾을수 없습니다.";
-
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException(message));
+                .orElseThrow(() -> new RuntimeException("주문에 해당하는 상세정보를 찾을수 없습니다."));
 
         if (order.getMember().getID() != memberDto.getID())
             throw new RuntimeException("해당 주문조회의 권한이 없습니다.");
 
         List<OrderItem> orderItems = orderItemRepository.findByOrderID(orderId);
 
-
-        Payment payment = paymentRepository.findByOrderID(orderId)
-                .orElseThrow(() -> new RuntimeException(message));
-
-        Delivery delivery = deliveryRepository.findByOrderID(orderId)
-                .orElseThrow(() -> new RuntimeException(message));
+        Optional<Payment> paymentOptional = paymentRepository.findByOrderID(orderId);
+        Optional<Delivery> deliveryOptional = deliveryRepository.findByOrderID(orderId);
 
         OrderResponse orderResponse = OrderResponse.builder()
                 .orderDto(convertToOrderDto(order))
                 .orderItemDtos(orderItems.stream().map(this::convertToOrderItemDto).collect(Collectors.toList()))
-                .paymentDto(convertToPaymentDto(payment))
-                .deliveryDto(convertToDeliveryDto(delivery))
+                .paymentDto(paymentOptional.map(this::convertToPaymentDto).orElse(null)) // null 반환
+                .deliveryDto(deliveryOptional.map(this::convertToDeliveryDto).orElse(null)) // null 반환
                 .build();
 
         return orderResponse;

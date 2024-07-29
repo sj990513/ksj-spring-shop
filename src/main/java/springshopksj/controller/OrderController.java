@@ -28,7 +28,9 @@ public class OrderController {
     private final OrderService orderService;
     private final MemberService memberService;
 
-
+    /**
+     * http://localhost:8080/orders
+     */
     // 로그인한 사용자 전체 주문내역 페이징 조회 - 사용자
     @GetMapping
     public ResponseEntity<?> getUserOrders(@RequestParam(value = "page", defaultValue = "1") int page) {
@@ -56,7 +58,7 @@ public class OrderController {
         return new ResponseEntity<>(orderResponse, HttpStatus.OK);
     }
 
-    // 주문취소 - 사용자
+    // 주문취소 - 결제전 주문 상태때만 취소가능
     /**
      * http://localhost:8080/orders/3/cancle
      */
@@ -99,6 +101,30 @@ public class OrderController {
 
         return new ResponseEntity<>(orderItemDtos, HttpStatus.OK);
     }
+
+    // 장바구니 품목 수량 수정
+    /** orderRequest
+     * {
+     *     "orderItems": [
+     *         {
+     *             "id" :61,
+     *             "itemID": 3,
+     *             "count": 3
+     *         }
+     *     ]
+     * }
+     */
+    @PatchMapping("/cart/update")
+    public ResponseEntity<?> updateCart(@RequestBody OrderRequest orderRequest) {
+
+        //로그인중인 사용자
+        MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        List<OrderItemDto> orderItemDtos = orderService.updateCartItems(memberDto, orderRequest.getOrderItems());
+
+        return new ResponseEntity<>(orderItemDtos, HttpStatus.OK);
+    }
+
 
 
     // 장바구니 품목 삭제 - 사용자
