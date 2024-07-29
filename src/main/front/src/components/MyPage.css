@@ -22,6 +22,7 @@
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
+  color: #0a68b4; /* 라벨 텍스트 색상 변경 */
 }
 
 .form-group input {
@@ -70,7 +71,7 @@
 }
 
 .delete-btn {
-  background-color: #ff5722;
+  background-color: red;
   color: white;
 }
 
@@ -164,4 +165,227 @@
 .order-status h2,
 .cart h2 {
   margin-bottom: 20px;
+}
+
+/* 추가된 CSS */
+.order-status {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.order-item {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 20px; /* 주문 항목 간의 간격을 추가합니다. */
+  background-color: #f9f9f9;
+}
+
+.order-item .form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.order-item .form-group label {
+  margin: 0;
+  font-weight: bold; /* 라벨의 기본 폰트 웨이트 설정 */
+  margin-right: 10px; /* 라벨과 값 사이의 간격 추가 */
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  display: flex;
+  align-items: center;
+  margin: 0 10px;
+}
+
+/* 추가된 CSS */
+.order-detail {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.order-detail h3,
+.order-detail h4 {
+  margin-bottom: 15px;
+}
+
+.order-detail-item,
+.order-item-detail,
+.delivery-info,
+.payment-info {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.order-item-detail {
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+}
+
+.order-notice {
+  font-size: 0.9em;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+
+.order-detail .form-group,
+.order-item-detail .form-group,
+.delivery-info .form-group,
+.payment-info .form-group {
+  display: flex;
+  justify-content: flex-start; /* Change from space-between to flex-start */
+  margin-bottom: 8px;
+}
+
+.order-detail .form-group label,
+.order-item-detail .form-group label,
+.delivery-info .form-group label,
+.payment-info .form-group label {
+  margin-right: 10px; /* Add some spacing between label and value */
+}
+
+.order-detail .bold-text,
+.order-item-detail .bold-text,
+.delivery-info .bold-text,
+.payment-info .bold-text {
+  margin-left: 10px; /* Ensure there is some space between the label and the value */
+}
+
+.back-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.back-btn:hover {
+  background-color: #0056b3;
+}
+
+.order-item {
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.order-item:hover {
+  background-color: #f0f0f0;
+}
+
+.order-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-details-header .cancel-btn {
+  margin-left: auto; /* Ensure the button aligns to the right */
+}
+
+.cart {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.cart h2 {
+  margin-bottom: 20px;
+}
+
+.cart-item {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+}
+
+.cart-item .form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cart-item .form-group label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.cart-item-image {
+  max-width: 500px;
+  max-height: 500px;
+  object-fit: cover;
+  margin-left: 10px;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-btn {
+  padding: 5px 10px;
+  margin: 0 5px;
+  border: 1px solid #ccc;
+  background-color: #388daf;
+  cursor: pointer;
+}
+
+.quantity-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.update-cart-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+}
+
+.update-cart-btn:hover {
+  background-color: #0056b3;
 }

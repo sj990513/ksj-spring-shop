@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useHistory, useLocation, Switch, Route, Redirect } from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
-import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import PersonalInfo from './PersonalInfo';
 import OrderStatus from './OrderStatus';
@@ -9,10 +9,9 @@ import './MyPage.css';
 
 const MyPage = () => {
   const [userData, setUserData] = useState(null);
-  const [activeTab, setActiveTab] = useState('personalInfo');
-
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const history = useHistory();
+  const location = useLocation();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -43,30 +42,28 @@ const MyPage = () => {
     return <div>Loading...</div>;
   }
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'personalInfo':
-        return <PersonalInfo userData={userData} setUserData={setUserData} />;
-      case 'orderStatus':
-        return <OrderStatus />;
-      case 'cart':
-        return <Cart />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <div className="mypage-container">
       <div className="sidebar">
         <ul>
-          <li className={activeTab === 'personalInfo' ? 'active' : ''} onClick={() => setActiveTab('personalInfo')}>개인정보</li>
-          <li className={activeTab === 'orderStatus' ? 'active' : ''} onClick={() => setActiveTab('orderStatus')}>주문현황</li>
-          <li className={activeTab === 'cart' ? 'active' : ''} onClick={() => setActiveTab('cart')}>장바구니</li>
+          <li className={location.pathname === '/mypage/personal-info' ? 'active' : ''} onClick={() => history.push('/mypage/personal-info')}>개인정보</li>
+          <li className={location.pathname === '/mypage/order-status' ? 'active' : ''} onClick={() => history.push('/mypage/order-status')}>주문현황</li>
+          <li className={location.pathname === '/mypage/cart' ? 'active' : ''} onClick={() => history.push('/mypage/cart')}>장바구니</li>
         </ul>
       </div>
       <div className="content">
-        {renderContent()}
+        <Switch>
+          <Route path="/mypage/personal-info">
+            <PersonalInfo userData={userData} setUserData={setUserData} />
+          </Route>
+          <Route path="/mypage/order-status">
+            <OrderStatus />
+          </Route>
+          <Route path="/mypage/cart">
+            <Cart />
+          </Route>
+          <Redirect from="/mypage" to="/mypage/personal-info" />
+        </Switch>
       </div>
     </div>
   );
