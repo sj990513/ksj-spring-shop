@@ -83,7 +83,7 @@ public class PayService {
     }
 
     // 카카오페이 ready
-    public KakaoReadyResponse kakaoPayReady(long orderId, PaymentDto paymentDto) {
+    public KakaoReadyResponse kakaoPayReady(long orderId, PaymentDto paymentDto, String accessToken) {
 
         Member member = memberRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을수 없습니다."));
@@ -110,9 +110,10 @@ public class PayService {
         parameters.add("total_amount", String.valueOf(order.getTotalprice()));
         parameters.add("vat_amount", "0");
         parameters.add("tax_free_amount", "0");
-        parameters.add("approval_url", "http://localhost:8080/payment/" + orderId + "/success"); // 성공 시 redirect url
-        parameters.add("cancel_url", "http://localhost:8080/payment/cancel");                   // 취소 시 redirect url
-        parameters.add("fail_url", "http://localhost:8080/payment/fail");                       // 실패 시 redirect url
+        parameters.add("approval_url", "http://localhost:3000/payment/" + orderId + "/success?token=" + accessToken); // 성공 시 redirect url
+        parameters.add("cancel_url", "http://localhost:3000/payment/cancel?token=" + accessToken);                   // 취소 시 redirect url
+        parameters.add("fail_url", "http://localhost:3000/payment/fail?token=" + accessToken);                       // 실패 시 redirect url
+
 
         // 파라미터, 헤더
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());

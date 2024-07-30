@@ -3,6 +3,7 @@ package springshopksj.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class PayController {
      *           }
      *       }
      */
-    @PostMapping("/{orderId}/virtual-account")
+    @PostMapping("/virtual-account/{orderId}")
     public ResponseEntity<?> payment(@PathVariable(name="orderId") Long orderId,
                                      @RequestBody OrderRequest orderRequest) {
 
@@ -48,11 +49,12 @@ public class PayController {
      *           }
      *       }
      */
-    @PostMapping("/{orderId}/ready")
+    @PostMapping("/ready/{orderId}")
     public KakaoReadyResponse readyToKakaoPay(@PathVariable(name="orderId") Long orderId,
-                                              @RequestBody OrderRequest orderRequest) {
+                                              @RequestBody OrderRequest orderRequest,
+                                              @RequestHeader("access") String accessToken) {
 
-        return payService.kakaoPayReady(orderId, orderRequest.getPaymentDto());
+        return payService.kakaoPayReady(orderId, orderRequest.getPaymentDto(), accessToken);
     }
 
     // 카카오페이 결제성공
