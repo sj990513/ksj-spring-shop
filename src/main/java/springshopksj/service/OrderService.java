@@ -242,8 +242,6 @@ public class OrderService {
         Order order = orderRepository.findByMemberIDAndStatus(memberDto.getID(), Order.OrderStatus.PENDING)
                 .orElseThrow(() -> new RuntimeException("장바구니가 존재하지 않습니다."));
 
-        System.out.println("order.getID() = " + order.getID());
-
         // 장바구니안에 존재하는 상품들
         List<OrderItem> orderItems = orderItemRepository.findByOrderID(order.getID());
 
