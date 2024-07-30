@@ -43,9 +43,8 @@ axiosInstance.interceptors.response.use(
       } catch (reissueError) {
         console.error('Token reissue failed', reissueError);
 
-        // 재요청 불가하게 access헤더 제거
+        // Remove access token and redirect to login if refresh token has expired
         localStorage.removeItem('access');
-        // Redirect to login if refresh token has expired
         window.location.href = '/login';
       }
     }

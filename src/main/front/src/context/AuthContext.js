@@ -5,19 +5,26 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if the user is logged in
-    axiosInstance.get('/check-auth')
-      .then(response => {
+    const checkAuth = async () => {
+      try {
+        await axiosInstance.get('/check-auth');
         setIsLoggedIn(true);
-        console.log("로그인상태");
-      })
-      .catch(error => {
+      } catch (error) {
         setIsLoggedIn(false);
-        console.log("비로그인상태");
-      });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>

@@ -9,6 +9,10 @@ import MyPage from './components/MyPage';
 import ItemList from './components/ItemList';
 import ItemDetail from './components/ItemDetail';
 import { AuthProvider, AuthContext } from './context/AuthContext';
+import Checkout from './components/Checkout';
+import KakaoPaySuccess from './components/KakaoPaySuccess';
+import KakaoPayCancel from './components/KakaoPayCancel';
+import KakaoPayFail from './components/KakaoPayFail';
 
 const onNaverLogin = () => {
   window.location.href = "http://localhost:8080/oauth2/authorization/naver";
@@ -63,6 +67,10 @@ function App() {
             <Route path="/mypage" component={MyPage} /> 
             <Route path="/item-list" component={ItemList} />
             <Route path="/item-detail/:itemId" component={ItemDetail} />
+            <Route path="/checkout" component={Checkout} />
+            <Route path="/payment/:orderId/success" component={KakaoPaySuccess} />
+            <Route path="/kakao-pay/cancel" component={KakaoPayCancel} />
+            <Route path="/kakao-pay/fail" component={KakaoPayFail} />
           </Switch>
         </div>
       </Router>

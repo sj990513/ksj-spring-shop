@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
 import './MyPage.css';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [quantities, setQuantities] = useState({});
+  const history = useHistory();
 
   useEffect(() => {
     fetchCartItems();
@@ -76,6 +78,22 @@ const Cart = () => {
     }, 0);
   };
 
+  const generateItemName = () => {
+    if (cartItems.length === 0) return '';
+    const firstItemName = cartItems[0].itemName;
+    const additionalItemCount = cartItems.length - 1;
+    return additionalItemCount > 0
+      ? `${firstItemName} 외 ${additionalItemCount}건`
+      : firstItemName;
+  };
+
+  const handleCheckout = () => {
+    const totalPrice = calculateTotalPrice();
+    const itemName = generateItemName();
+    const orderId = cartItems[0].orderID; // Assuming orderId is same for all items in the cart
+    history.push('/checkout', { amount: totalPrice, itemName, orderId });
+  };
+
   return (
     <div className="cart">
       <h2>장바구니</h2>
@@ -113,10 +131,10 @@ const Cart = () => {
         <>
           <button onClick={handleUpdateButtonClick} className="button update-cart-btn">장바구니 업데이트</button>
           <div className="total-price">
-            <br></br>
+            <br />
             <h3>총 가격: {calculateTotalPrice()}원</h3>
           </div>
-          <button className="button checkout-btn">결제</button>
+          <button onClick={handleCheckout} className="button checkout-btn">결제</button>
         </>
       )}
     </div>

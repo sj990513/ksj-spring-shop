@@ -8,7 +8,7 @@ const OrderStatus = () => {
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const { path, url } = useRouteMatch(); // Add url
+  const { path, url } = useRouteMatch();
   const history = useHistory();
 
   useEffect(() => {
@@ -66,26 +66,28 @@ const OrderStatus = () => {
           <p className="order-notice">주문을 클릭하면 상세정보 조회가 가능합니다.</p>
           {orders.length > 0 ? (
             <div>
-              {orders.map((order) => (
-                <div key={order.id} className="order-item" onClick={() => handleOrderClick(order.id)}>
-                  <div className="form-group">
-                    <label>주문 번호:</label>
-                    <span className="bold-text">{order.id}</span>
+              {orders
+                .filter(order => order.status !== 'PENDING')
+                .map((order) => (
+                  <div key={order.id} className="order-item" onClick={() => handleOrderClick(order.id)}>
+                    <div className="form-group">
+                      <label>주문 번호:</label>
+                      <span className="bold-text">{order.id}</span>
+                    </div>
+                    <div className="form-group">
+                      <label>주문 상태:</label>
+                      <span className="bold-text">{getStatusLabel(order.status)}</span>
+                    </div>
+                    <div className="form-group">
+                      <label>주문 날짜:</label>
+                      <span className="bold-text">{new Date(order.orderDate).toLocaleDateString()}</span>
+                    </div>
+                    <div className="form-group">
+                      <label>결제 금액:</label>
+                      <span className="bold-text">{order.totalprice}원</span>
+                    </div>
                   </div>
-                  <div className="form-group">
-                    <label>주문 상태:</label>
-                    <span className="bold-text">{getStatusLabel(order.status)}</span>
-                  </div>
-                  <div className="form-group">
-                    <label>주문 날짜:</label>
-                    <span className="bold-text">{new Date(order.orderDate).toLocaleDateString()}</span>
-                  </div>
-                  <div className="form-group">
-                    <label>결제 금액:</label>
-                    <span className="bold-text">{order.totalprice}원</span>
-                  </div>
-                </div>
-              ))}
+                ))}
               <div className="pagination">
                 <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>이전</button>
                 <span>{currentPage} / {totalPages}</span>
