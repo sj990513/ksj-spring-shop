@@ -4,21 +4,32 @@ import axiosInstance from '../axiosInstance';
 import OrderDetail from './OrderDetail';
 import './MyPage.css';
 
+const statusOptions = [
+  { value: 'all', label: '모든 주문' },
+  { value: 'ordered', label: '주문완료' },
+  { value: 'paid', label: '결제완료' },
+  { value: 'cancle', label: '취소요청' },
+  { value: 'cancelled', label: '취소됨' },
+  { value: 'shipped', label: '배송중' },
+  { value: 'delivered', label: '배송완료' },
+];
+
 const OrderStatus = () => {
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [status, setStatus] = useState('all');
   const { path, url } = useRouteMatch();
   const history = useHistory();
 
   useEffect(() => {
-    fetchOrders(currentPage);
-  }, [currentPage]);
+    fetchOrders(currentPage, status);
+  }, [currentPage, status]);
 
-  const fetchOrders = async (page) => {
+  const fetchOrders = async (page, status) => {
     try {
       const response = await axiosInstance.get('/orders', {
-        params: { page: page },
+        params: { page: page, status: status },
       });
       setOrders(response.data.content);
       setTotalPages(response.data.totalPages);
@@ -31,6 +42,11 @@ const OrderStatus = () => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
+  };
+
+  const handleStatusChange = (e) => {
+    setStatus(e.target.value);
+    setCurrentPage(1); // Reset to first page on status change
   };
 
   const getStatusLabel = (status) => {
@@ -64,6 +80,15 @@ const OrderStatus = () => {
         <div className="order-status">
           <h2>주문현황</h2>
           <p className="order-notice">주문을 클릭하면 상세정보 조회가 가능합니다.</p>
+          <div className="filter-bar">
+            <select value={status} onChange={handleStatusChange} className="status-select">
+              {statusOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
           {orders.length > 0 ? (
             <div>
               {orders

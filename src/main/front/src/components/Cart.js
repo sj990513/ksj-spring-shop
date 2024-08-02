@@ -91,7 +91,7 @@ const Cart = () => {
     const totalPrice = calculateTotalPrice();
     const itemName = generateItemName();
     const orderId = cartItems[0].orderID; // Assuming orderId is same for all items in the cart
-    history.push('/checkout', { amount: totalPrice, itemName, orderId });
+    history.push('/checkout/address', { amount: totalPrice, itemName, orderId });
   };
 
   return (

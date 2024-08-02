@@ -5,7 +5,7 @@ import MainScreen from './components/MainScreen';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Logout from './components/Logout';
-import MyPage from './components/MyPage'; 
+import MyPage from './components/MyPage';
 import ItemList from './components/ItemList';
 import ItemDetail from './components/ItemDetail';
 import { AuthProvider, AuthContext } from './context/AuthContext';
@@ -64,7 +64,7 @@ function App() {
             <Route exact path="/" component={MainScreen} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
-            <Route path="/mypage" component={MyPage} /> 
+            <Route path="/mypage" component={MyPage} />
             <Route path="/item-list" component={ItemList} />
             <Route path="/item-detail/:itemId" component={ItemDetail} />
             <Route path="/checkout" component={Checkout} />

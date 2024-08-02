@@ -60,7 +60,7 @@ const OrderDetail = ({ fetchOrders }) => {
     const isConfirmed = window.confirm('정말로 주문을 취소하시겠습니까?');
     if (isConfirmed) {
       try {
-        await axiosInstance.patch(`/orders/${orderId}/cancle`);
+        await axiosInstance.patch(`/orders/${orderId}/cancel`);
         alert('주문이 취소되었습니다.');
         fetchOrders();  // 주문 목록을 다시 가져옵니다.
         history.push('/mypage/order-status');  // 주문현황으로 이동
@@ -69,6 +69,22 @@ const OrderDetail = ({ fetchOrders }) => {
         alert('주문 취소에 실패했습니다.');
       }
     }
+  };
+
+  const handleCheckout = () => {
+    const totalPrice = orderItemDtos.reduce((total, item) => total + item.orderprice * item.count, 0);
+
+    const generateItemName = () => {
+      if (orderItemDtos.length === 0) return '';
+      const firstItemName = orderItemDtos[0].itemName;
+      const additionalItemCount = orderItemDtos.length - 1;
+      return additionalItemCount > 0
+        ? `${firstItemName} 외 ${additionalItemCount}건`
+        : firstItemName;
+    };
+
+    const itemName = generateItemName();
+    history.push(`/checkout/payment-method/${orderId}`, { amount: totalPrice, itemName, orderId });
   };
 
   if (!order) {
@@ -81,8 +97,13 @@ const OrderDetail = ({ fetchOrders }) => {
     <div className="order-detail">
       <button onClick={() => history.push('/mypage/order-status')} className="button back-btn">목록으로 돌아가기</button>
       <h3 className="order-details-header">
-        주문 상세 정보 {(orderDto.status === 'ORDERED') && (<button onClick={handleCancelOrder} className="button cancel-btn">주문 취소</button>)}
-        </h3>
+        주문 상세 정보 {(orderDto.status === 'ORDERED') && (
+          <>
+            <button onClick={handleCancelOrder} className="button cancel-btn">주문 취소</button>
+            <button onClick={handleCheckout} className="button checkout-btn">결제하기</button>
+          </>
+        )}
+      </h3>
       <h4>주문 상품 정보</h4>
       {orderItemDtos.length > 0 ? orderItemDtos.map((item) => (
         <div key={item.ID} className="order-item-detail">
