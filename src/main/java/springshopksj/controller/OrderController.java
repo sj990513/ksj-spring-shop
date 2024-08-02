@@ -33,13 +33,20 @@ public class OrderController {
      */
     // 로그인한 사용자 전체 주문내역 페이징 조회 - 사용자
     @GetMapping
-    public ResponseEntity<?> getUserOrders(@RequestParam(value = "page", defaultValue = "1") int page) {
+    public ResponseEntity<?> getUserOrders(@RequestParam(value = "status", defaultValue = "all") String status,
+                                           @RequestParam(value = "page", defaultValue = "1") int page) {
 
         MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
         PageRequest pageable = PageRequest.of(page-1 , Constants.PAGE_SIZE);
+        Page<OrderDto> orders;
 
-        Page<OrderDto> orders = orderService.getOrdersByUserId(memberDto, pageable);
+        if (status.equals("all"))
+            orders = orderService.getOrdersByUserId(memberDto, pageable);
+
+        else {
+            orders = orderService.findByStatus(status, pageable);
+        }
 
         return new ResponseEntity<>(orders, HttpStatus.OK);
     }

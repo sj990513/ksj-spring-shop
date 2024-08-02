@@ -352,38 +352,6 @@ public class OrderService {
         return orders.map(this::convertToOrderDto);
     }
 
-    // orderId로 모든 order 디테일 찾기 - 주문상세보기 (order, orderItems, payment, delivery)
-    public OrderResponse findOrderDetailByOrderId(MemberDto memberDto, long orderId) {
-
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("주문에 해당하는 상세정보를 찾을수 없습니다."));
-
-        if (order.getMember().getID() != memberDto.getID())
-            throw new RuntimeException("해당 주문조회의 권한이 없습니다.");
-
-        List<OrderItem> orderItems = orderItemRepository.findByOrderID(orderId);
-
-        Optional<Payment> paymentOptional = paymentRepository.findByOrderID(orderId);
-        Optional<Delivery> deliveryOptional = deliveryRepository.findByOrderID(orderId);
-
-        OrderResponse orderResponse = OrderResponse.builder()
-                .orderDto(convertToOrderDto(order))
-                .orderItemDtos(orderItems.stream().map(this::convertToOrderItemDto).collect(Collectors.toList()))
-                .paymentDto(paymentOptional.map(this::convertToPaymentDto).orElse(null)) // null 반환
-                .deliveryDto(deliveryOptional.map(this::convertToDeliveryDto).orElse(null)) // null 반환
-                .build();
-
-        return orderResponse;
-    }
-
-    //모든 order 조회 - 페이징처리
-    public Page<OrderDto> findAllOrders(Pageable pageable) {
-
-        Page<Order> allOrders = orderRepository.findAll(pageable);
-
-        return allOrders.map(this::convertToOrderDto);
-    }
-
     // order status별 조회 - 페이징 처리
     public Page<OrderDto> findByStatus(String status, Pageable pageable) {
 
@@ -423,6 +391,40 @@ public class OrderService {
         return findByCategory.map(this::convertToOrderDto);
     }
 
+    // orderId로 모든 order 디테일 찾기 - 주문상세보기 (order, orderItems, payment, delivery)
+    public OrderResponse findOrderDetailByOrderId(MemberDto memberDto, long orderId) {
+
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("주문에 해당하는 상세정보를 찾을수 없습니다."));
+
+        // 해당사용자거나 관리자가 아니면
+        if (order.getMember().getID() != memberDto.getID() && !memberDto.getRole().equals(Member.Role.ROLE_ADMIN))
+            throw new RuntimeException("해당 주문조회의 권한이 없습니다.");
+
+        List<OrderItem> orderItems = orderItemRepository.findByOrderID(orderId);
+
+        Optional<Payment> paymentOptional = paymentRepository.findByOrderID(orderId);
+        Optional<Delivery> deliveryOptional = deliveryRepository.findByOrderID(orderId);
+
+        OrderResponse orderResponse = OrderResponse.builder()
+                .orderDto(convertToOrderDto(order))
+                .orderItemDtos(orderItems.stream().map(this::convertToOrderItemDto).collect(Collectors.toList()))
+                .paymentDto(paymentOptional.map(this::convertToPaymentDto).orElse(null)) // null 반환
+                .deliveryDto(deliveryOptional.map(this::convertToDeliveryDto).orElse(null)) // null 반환
+                .build();
+
+        return orderResponse;
+    }
+
+
+    //모든 order 조회 - 페이징처리
+    public Page<OrderDto> findAllOrders(Pageable pageable) {
+
+        Page<Order> allOrders = orderRepository.findAll(pageable);
+
+        return allOrders.map(this::convertToOrderDto);
+    }
+
     // order status별 조회 - 페이징 처리 x - 관리자페이지에서 사용
     public List<OrderDto> findByStatusList(Order.OrderStatus status) {
 
@@ -448,12 +450,28 @@ public class OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("해당하는 주문을 찾을수 없습니다."));
 
-        // 결제전 주문 상태때맨 취소가능
-        if (order.getStatus() != Order.OrderStatus.ORDERED) {
-            throw new RuntimeException("주문 취소가 불가능합니다.");
+        // order상태일땐 즉시취소
+        if (order.getStatus() == Order.OrderStatus.ORDERED) {
+            List<OrderItem> orderItems = orderItemRepository.findByOrderID(orderId);
+
+            for (OrderItem orderItem : orderItems) {
+                Item item = itemRepository.findById(orderItem.getItem().getID())
+                        .orElseThrow(() -> new RuntimeException("상품을 찾을수 없습니다."));
+
+                // 재고복구
+                item.setStock(item.getStock() + orderItem.getCount());
+                itemRepository.save(item);
+            }
+
+            order.setStatus(Order.OrderStatus.CANCELLED);
+            orderRepository.save(order);
         }
-        order.setStatus(Order.OrderStatus.CANCEL);
-        orderRepository.save(order);
+
+        // paid상태일땐 관리자 검토
+        else if (order.getStatus() == Order.OrderStatus.PAID) {
+            order.setStatus(Order.OrderStatus.CANCEL);
+            orderRepository.save(order);
+        }
     }
 
     // order status 업데이트 status : CANCELLED, SHIPPED, DELIVERED (3가지만허용), - 관리자

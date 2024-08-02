@@ -236,6 +236,8 @@ public class AdminController {
     public ResponseEntity<?> orderByStatus(@RequestParam(value = "page", defaultValue = "1") int page,
                                            @PathVariable(name="status") String status) {
 
+        MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
         PageRequest pageable = PageRequest.of(page-1 , Constants.PAGE_SIZE);
 
         Page<OrderDto> statusOrderList = orderService.findByStatus(status, pageable);
