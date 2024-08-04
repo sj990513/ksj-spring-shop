@@ -126,16 +126,6 @@ public class PayService {
                 requestEntity,
                 KakaoReadyResponse.class);
 
-        // 결제 정보 생성, 저장
-        Payment payment = Payment.builder()
-                .order(order)
-                .paymentmethod(paymentDto.getPaymentMethod())
-                .amount(paymentDto.getAmount())
-                .paymentdate(LocalDateTime.now())
-                .build();
-
-        paymentRepository.save(payment);
-
         return kakaoReady;
     }
 
@@ -168,10 +158,19 @@ public class PayService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("해당 주문을 찾을수 없습니다."));
 
-
         // 결제완료로 변경
         order.setStatus(Order.OrderStatus.PAID);
         orderRepository.save(order);
+
+        // 결제 정보 생성, 저장
+        Payment payment = Payment.builder()
+                .order(order)
+                .paymentmethod("KAKAO_PAY")
+                .amount((int) order.getTotalprice())
+                .paymentdate(LocalDateTime.now())
+                .build();
+
+        paymentRepository.save(payment);
 
         return approveResponse;
     }

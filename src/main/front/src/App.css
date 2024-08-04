@@ -116,3 +116,34 @@ nav ul li a.active {
 .login-btn:hover {
   background-color: darkblue;
 }
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+nav ul li {
+  margin-right: 20px;
+}
+
+/* 추가: 오른쪽 정렬을 위한 클래스 */
+.right-align {
+  margin-left: auto; /* 자동으로 오른쪽 끝으로 밀어냄 */
+}
+
+.right-align button {
+  background-color: red;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.right-align button:hover {
+  background-color: darkred;
+}

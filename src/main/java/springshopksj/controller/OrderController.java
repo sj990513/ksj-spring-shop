@@ -101,10 +101,11 @@ public class OrderController {
      */
     @PostMapping("/cart/add-cart")
     public ResponseEntity<?> createCart(@RequestBody OrderRequest orderRequest) {
+        
         //로그인중인 사용자
         MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
-        List<OrderItemDto> orderItemDtos  = orderService.addCart(memberDto, orderRequest.getOrderItems());
+        List<OrderItemDto> orderItemDtos = orderService.addCart(memberDto, orderRequest.getOrderItems());
 
         return new ResponseEntity<>(orderItemDtos, HttpStatus.OK);
     }

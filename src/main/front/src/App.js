@@ -51,8 +51,11 @@ function App() {
                           <NavLink to="/mypage" activeClassName="active">마이페이지</NavLink>
                         </li>
                         <li>
-                          <Logout />
+                          <NavLink to="/item-list" activeClassName="active">상품목록</NavLink>
                         </li>
+                        <div className="right-align">
+                          <Logout />
+                        </div>
                       </>
                     )}
                   </>

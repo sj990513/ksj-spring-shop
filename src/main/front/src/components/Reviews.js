@@ -115,21 +115,23 @@ const Reviews = ({ itemId, itemDetail }) => {
         <p>아직 리뷰가 존재하지 않습니다.</p>
       )}
 
-      <div className="pagination">
-        <button
-          onClick={() => setReviewPage(reviewPage - 1)}
-          disabled={reviewPage === 1}
-        >
-          이전
-        </button>
-        <span>{reviewPage} / {reviewTotalPages}</span>
-        <button
-          onClick={() => setReviewPage(reviewPage + 1)}
-          disabled={reviewPage === reviewTotalPages}
-        >
-          다음
-        </button>
-      </div>
+      {reviewTotalPages > 1 && (
+        <div className="pagination">
+          <button
+            onClick={() => setReviewPage(reviewPage - 1)}
+            disabled={reviewPage === 1}
+          >
+            이전
+          </button>
+          <span>{reviewPage} / {reviewTotalPages}</span>
+          <button
+            onClick={() => setReviewPage(reviewPage + 1)}
+            disabled={reviewPage === reviewTotalPages}
+          >
+            다음
+          </button>
+        </div>
+      )}
 
       <div className="add-review">
         <h3>리뷰 추가</h3>

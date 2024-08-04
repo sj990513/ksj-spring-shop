@@ -119,16 +119,33 @@ public class OrderService {
                 throw new RuntimeException("해당 상품의 재고가 남아있지 않습니다.: " + item.getItemname());
             }
 
-            OrderItem orderItem = OrderItem.builder()
-                    .order(order)
-                    .item(item)
-                    .orderprice(item.getPrice())
-                    .count(orderItemDto.getCount())
-                    .build();
+            // 같은 상품 들어왔을시 수량만 변경
+            Optional<OrderItem> findExistingItem = orderItemRepository.findByOrderIDAndItemID(order.getID(), orderItemDto.getItemID());
 
-            totalprice += (orderItem.getCount() * orderItem.getOrderprice());
+            // 기존값 존재할시
+            if (!findExistingItem.isEmpty()) {
+                int count = findExistingItem.get().getCount() + orderItemDto.getCount();
 
-            orderItemRepository.save(orderItem);
+                findExistingItem.get().setCount(count);
+
+                totalprice += (orderItemDto.getCount() * item.getPrice());
+
+                orderItemRepository.save(findExistingItem.get());
+            }
+
+            // 기존값 존재하지않을시 findExistingItem.isEmpty()
+            else {
+                OrderItem orderItem = OrderItem.builder()
+                        .order(order)
+                        .item(item)
+                        .orderprice(item.getPrice())
+                        .count(orderItemDto.getCount())
+                        .build();
+
+                totalprice += (orderItem.getCount() * orderItem.getOrderprice());
+
+                orderItemRepository.save(orderItem);
+            }
         }
 
         order.setTotalprice(totalprice);

@@ -29,16 +29,73 @@
   font-weight: bold;
   font-size: 1.1em;
   transition: background-color 0.3s, color 0.3s;
+  color: #007bff;
 }
 
 .tab:hover {
-  background-color: #e0e0e0;
+  background-color: #007bff;
+  color: #fff;
 }
 
 .tab.active {
+  background-color: #0056b3;
+  color: #fff;
+  border-color: #0056b3;
+}
+
+.quantity-container {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.quantity-container label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-btn {
+  padding: 10px;
   background-color: #007bff;
   color: #fff;
-  border-color: #007bff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  margin: 0 5px;
+  font-size: 1.1em;
+}
+
+.quantity-btn:hover {
+  background-color: #0056b3;
+}
+
+.quantity-container input {
+  width: 60px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 1.1em;
+}
+
+.add-to-cart-btn {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #218838;
 }
 
 .reviews, .qna {
@@ -107,9 +164,6 @@ button + button {
   color: #ddd;
 }
 
-/* Existing styles */
-
-/* Add this new CSS class for the delete button */
 .delete-review-btn {
   background-color: red;
   color: white;

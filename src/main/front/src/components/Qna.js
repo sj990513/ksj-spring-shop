@@ -87,21 +87,23 @@ const Qna = ({ itemId }) => {
         <p>아직 Q&A가 존재하지 않습니다.</p>
       )}
 
-      <div className="pagination">
-        <button
-          onClick={() => setQnaPage(qnaPage - 1)}
-          disabled={qnaPage === 1}
-        >
-          이전
-        </button>
-        <span>{qnaPage} / {qnaTotalPages}</span>
-        <button
-          onClick={() => setQnaPage(qnaPage + 1)}
-          disabled={qnaPage === qnaTotalPages}
-        >
-          다음
-        </button>
-      </div>
+      {qnaTotalPages > 1 && (
+        <div className="pagination">
+          <button
+            onClick={() => setQnaPage(qnaPage - 1)}
+            disabled={qnaPage === 1}
+          >
+            이전
+          </button>
+          <span>{qnaPage} / {qnaTotalPages}</span>
+          <button
+            onClick={() => setQnaPage(qnaPage + 1)}
+            disabled={qnaPage === qnaTotalPages}
+          >
+            다음
+          </button>
+        </div>
+      )}
 
       <div className="add-qna">
         <h3>Q&A 추가</h3>
