@@ -162,21 +162,22 @@ public class OrderController {
         return new ResponseEntity<>("장바구니 삭제성공", HttpStatus.OK);
     }
 
-    // 장바구니에서 주문 - 사용자
+    // 주문 - 사용자
     /**
      * orderRequest
      * {
      *     "deliveryDto": {
-     *         "address": "example korea 1234"
+     *         "address": "example korea 1234",
+     *         "orderID": 93
      *     }
      * }
      */
-    @PostMapping("/cart/create")
+    @PostMapping("/create")
     public ResponseEntity<?> orderFromCart(@RequestBody OrderRequest orderRequest) {
         //로그인중인 사용자
         MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
-        OrderDto orderDto  = orderService.createOrderFromCart(memberDto, orderRequest.getDeliveryDto());
+        OrderDto orderDto  = orderService.createOrderDetatil(memberDto, orderRequest.getDeliveryDto());
 
         return new ResponseEntity<>(orderDto, HttpStatus.OK);
     }
@@ -191,10 +192,6 @@ public class OrderController {
      *             "itemID": 3,
      *             "count": 3
      *         }
-     *     ],
-     *     "deliveryDto": {
-     *         "address": "123 Main St, Anytown, USA"
-     *     }
      * }
      */
     @PostMapping("/order-now")
@@ -202,7 +199,7 @@ public class OrderController {
 
         MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
-        OrderDto orderDto = orderService.createOrder(memberDto, orderRequest.getOrderItems(), orderRequest.getDeliveryDto());
+        OrderDto orderDto = orderService.createOrder(memberDto, orderRequest.getOrderItems());
 
         return new ResponseEntity<>(orderDto, HttpStatus.OK);
     }

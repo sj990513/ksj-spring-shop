@@ -3,6 +3,7 @@ package springshopksj.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,22 +69,25 @@ public class PayController {
     }
 
     // 카카오페이 결제 진행중 취소
-    @GetMapping("/cancel")
-    public void cancel() {
-        throw new RuntimeException("결제 취소");
+    @GetMapping("/{orderId}/cancel")
+    public ResponseEntity cancel(@PathVariable(name="orderId") Long orderId) {
+
+        PaymentDto paymentDto = payService.kakaoCancel(orderId);
+
+        return new ResponseEntity<>(paymentDto, HttpStatus.OK);
     }
 
     // 카카오페이 결제 실패
-    @GetMapping("/fail")
-    public void fail() {
-        throw new RuntimeException("결제 실패");
+    @GetMapping("/{orderId}/fail")
+    public ResponseEntity fail() {
+        return new ResponseEntity<>("결제 실패", HttpStatus.OK);
     }
 
     // 카카오페이 환불
-    @PostMapping("/refund")
+    @PostMapping("/{orderId}/refund")
     public ResponseEntity refund() {
 
-        KakaoCancelResponse kakaoCancelResponse = payService.kakaoCancel();
+        KakaoCancelResponse kakaoCancelResponse = payService.kakaoRefund();
 
         return new ResponseEntity<>(kakaoCancelResponse, HttpStatus.OK);
     }

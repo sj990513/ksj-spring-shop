@@ -248,18 +248,18 @@ public class OrderService {
     }
 
     
-    // 장바구니에서 결제
-    public OrderDto createOrderFromCart(MemberDto memberDto, DeliveryDto deliveryDto) {
+    // 결제
+    public OrderDto createOrderDetatil(MemberDto memberDto, DeliveryDto deliveryDto) {
         
         // 주문 요청한 사용자 (현재 로그인한 사용자)
         Member member = memberRepository.findById(memberDto.getID())
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을수 없습니다."));
 
-        // 장바구니 불러오기
-        Order order = orderRepository.findByMemberIDAndStatus(memberDto.getID(), Order.OrderStatus.PENDING)
-                .orElseThrow(() -> new RuntimeException("장바구니가 존재하지 않습니다."));
+        // 상품 불러오기
+        Order order = orderRepository.findById(deliveryDto.getOrderID())
+                .orElseThrow(() -> new RuntimeException("주문이 존재하지 않습니다."));
 
-        // 장바구니안에 존재하는 상품들
+        //주문안에 존재하는 상품들
         List<OrderItem> orderItems = orderItemRepository.findByOrderID(order.getID());
 
         if (orderItems.isEmpty()) {
@@ -298,7 +298,7 @@ public class OrderService {
     }
 
     // 아이템 디테일에서 개별주문(즉시주문) 생성
-    public OrderDto createOrder(MemberDto memberDto, List<OrderItemDto> orderItems, DeliveryDto deliveryDto) {
+    public OrderDto createOrder(MemberDto memberDto, List<OrderItemDto> orderItems) {
 
         // 주문 요청한 사용자 (현재 로그인한 사용자)
         Member member = memberRepository.findById(memberDto.getID())
@@ -346,15 +346,6 @@ public class OrderService {
             item.setStock(item.getStock() - orderItem.getCount());
             itemRepository.save(item);
         }
-
-        // 배송 정보 생성
-        Delivery delivery = Delivery.builder()
-                .order(order)
-                .status(Delivery.DeliveryStatus.READY)
-                .address(deliveryDto.getAddress())
-                .build();
-
-        deliveryRepository.save(delivery);
 
         OrderDto orderDto = convertToOrderDto(order);
 
