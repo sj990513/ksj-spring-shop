@@ -61,6 +61,27 @@ const ItemDetail = () => {
     }
   };
 
+  const handleOrderNow = async () => {
+    try {
+      const orderRequest = {
+        orderItems: [
+          {
+            itemID: itemId,
+            count: count
+          }
+        ]
+      };
+      const totalAmount = itemDetail.itemDto.price * count;
+      const itemName = itemDetail.itemDto.itemname;
+      const response = await axiosInstance.post('/orders/order-now', orderRequest);
+      const { id } = response.data; // Assuming the response contains the order id
+      history.push('/checkout/address', { amount: totalAmount, itemName, orderId: id });
+    } catch (error) {
+      console.error('There was an error placing the order!', error);
+      alert('즉시 주문에 실패했습니다.');
+    }
+  };
+
   if (!itemDetail) {
     return <div>Loading...</div>;
   }
@@ -88,6 +109,7 @@ const ItemDetail = () => {
         />
       </div>
       <button className="add-to-cart-btn" onClick={handleAddToCart}>장바구니에 추가</button>
+      <button className="order-now-btn" onClick={handleOrderNow}>즉시 주문</button>
       <br></br>
       <br></br>
       <div className="tab-container">

@@ -72,8 +72,8 @@ function App() {
             <Route path="/item-detail/:itemId" component={ItemDetail} />
             <Route path="/checkout" component={Checkout} />
             <Route path="/payment/:orderId/success" component={KakaoPaySuccess} />
-            <Route path="/kakao-pay/cancel" component={KakaoPayCancel} />
-            <Route path="/kakao-pay/fail" component={KakaoPayFail} />
+            <Route path="/payment/:orderId/cancel" component={KakaoPayCancel} />
+            <Route path="/payment/:orderId/fail" component={KakaoPayFail} />
           </Switch>
         </div>
       </Router>

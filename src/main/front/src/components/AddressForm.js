@@ -23,6 +23,7 @@ const AddressForm = () => {
             const orderRequest = {
                 deliveryDto: {
                     address,
+                    orderID: orderId
                 },
                 paymentDto: {
                     amount,
@@ -30,7 +31,7 @@ const AddressForm = () => {
                 }
             };
 
-            await axiosInstance.post('/orders/cart/create', orderRequest);
+            await axiosInstance.post('/orders/create', orderRequest);
             history.push(`/checkout/payment-method/${orderId}`, { amount, itemName, orderId });
         } catch (error) {
             console.error('주문 생성 중 오류가 발생했습니다.', error);

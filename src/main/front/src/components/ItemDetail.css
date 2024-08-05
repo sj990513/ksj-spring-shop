@@ -176,3 +176,20 @@ button + button {
 .delete-review-btn:hover {
   background-color: darkred;
 }
+
+/* 기존 스타일에 추가 */
+.order-now-btn {
+  padding: 10px 20px;
+  background-color: #ff5733;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.order-now-btn:hover {
+  background-color: #c70039;
+}

@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import springshopksj.dto.KakaoApproveResponse;
-import springshopksj.dto.KakaoCancelResponse;
-import springshopksj.dto.KakaoReadyResponse;
-import springshopksj.dto.PaymentDto;
+import springshopksj.dto.*;
 import springshopksj.entity.Member;
 import springshopksj.entity.Order;
 import springshopksj.entity.Payment;
@@ -110,9 +107,9 @@ public class PayService {
         parameters.add("total_amount", String.valueOf(order.getTotalprice()));
         parameters.add("vat_amount", "0");
         parameters.add("tax_free_amount", "0");
-        parameters.add("approval_url", "http://localhost:3000/payment/" + orderId + "/success?token=" + accessToken); // 성공 시 redirect url
-        parameters.add("cancel_url", "http://localhost:3000/payment/cancel?token=" + accessToken);                   // 취소 시 redirect url
-        parameters.add("fail_url", "http://localhost:3000/payment/fail?token=" + accessToken);                       // 실패 시 redirect url
+        parameters.add("approval_url", "http://localhost:3000/payment/" + orderId + "/success?token=" + accessToken);  // 성공 시 redirect url
+        parameters.add("cancel_url", "http://localhost:3000/payment/" + orderId + "/cancel?token=" + accessToken);     // 취소 시 redirect url
+        parameters.add("fail_url", "http://localhost:3000/payment/" + orderId + "/fail?token=" + accessToken);         // 실패 시 redirect url
 
 
         // 파라미터, 헤더
@@ -176,9 +173,24 @@ public class PayService {
     }
 
     /**
+     * 카카오 결제 취소
+     */
+    public PaymentDto kakaoCancel(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("해당 주문을 찾을수 없습니다."));
+
+        PaymentDto paymentDto = PaymentDto.builder()
+                .amount((int) order.getTotalprice())
+                .itemName(order.getID() + "번 주문")
+                .build();
+
+        return paymentDto;
+    }
+
+    /**
      * 카카오 결제 환불
      */
-    public KakaoCancelResponse kakaoCancel() {
+    public KakaoCancelResponse kakaoRefund() {
 
         // 카카오페이 요청
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
