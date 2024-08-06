@@ -15,12 +15,16 @@ import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    Page<Order> findByMemberID(long userID, Pageable pageable);
 
     Optional<Order> findByMemberIDAndStatus(long userID, Order.OrderStatus status);
 
-    // 페이징
-    Page<Order> findByStatus(Order.OrderStatus status, Pageable pageable);
+    // orderID내림차순
+    @Query("SELECT o FROM Order o WHERE o.member.ID = :userID ORDER BY o.ID DESC")
+    Page<Order> findByMemberID(@Param("userID") long userID, Pageable pageable);
+
+    // orderID내림차순
+    @Query("SELECT o FROM Order o WHERE o.status = :status ORDER BY o.ID DESC")
+    Page<Order> findByStatus(@Param("status") Order.OrderStatus status, Pageable pageable);
 
     // 페이징x
     List<Order> findByStatus(Order.OrderStatus status);

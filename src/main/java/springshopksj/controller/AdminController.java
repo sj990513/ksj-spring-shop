@@ -89,6 +89,23 @@ public class AdminController {
         return new ResponseEntity<>(updateMemberDto, HttpStatus.OK);
     }
 
+    //회원삭제
+    @DeleteMapping("/member-list/{userId}/delete")
+    public ResponseEntity<?> deleteMember(@PathVariable(name = "userId") long userId) {
+
+        //현재 로그인중인 사용자
+        MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        String msg = memberService.deleteUserByAdmin(memberDto, userId);
+
+        if (msg.equals("삭제 성공"))
+            return new ResponseEntity<>(msg, HttpStatus.OK);
+
+        else
+            return new ResponseEntity<>(msg, HttpStatus.UNAUTHORIZED);
+
+    }
+
 
     // 전체 아이템조회
     /**
@@ -134,6 +151,16 @@ public class AdminController {
 
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+
+
+
+    //////////////여기부터 시작하면된다.
+
+
+
+
+
 
     // 아이템 수정 - 관리자만 가능
     /**

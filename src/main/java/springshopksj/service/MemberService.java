@@ -195,4 +195,22 @@ public class MemberService {
         memberRepository.delete(member);
         return "삭제 성공";
     }
+
+    //회원 삭제 - 관리자
+    public String deleteUserByAdmin(MemberDto memberDto, long userId) {
+
+        Member loginUser = memberRepository.findById(memberDto.getID())
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을수 없습니다."));
+
+        if (loginUser.getRole().equals(Member.Role.ROLE_ADMIN)) {
+            Member member = memberRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("사용자를 찾을수 없습니다."));
+
+            memberRepository.delete(member);
+            return "삭제 성공";
+        }
+
+        else
+            return "삭제 실패";
+    }
 }

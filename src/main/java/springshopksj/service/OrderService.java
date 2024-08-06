@@ -352,7 +352,7 @@ public class OrderService {
         return orderDto;
     }
 
-    // userId로 order찾기
+    // userId로 order찾기 - 페이징처리
     public Page<OrderDto> getOrdersByUserId(MemberDto memberDto, Pageable pageable) {
 
         Page<Order> orders = orderRepository.findByMemberID(memberDto.getID(), pageable);

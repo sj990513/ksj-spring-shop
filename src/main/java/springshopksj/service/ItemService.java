@@ -61,17 +61,9 @@ public class ItemService {
     //모든 아이템 조회 (페이징 처리)
     public Page<ItemDto> findAllItems(Pageable pageable) {
 
-        Page<Item> findItems = itemRepository.findAll(pageable);
+        Page<Item> findItems = itemRepository.findAllItems(pageable);
 
         return findItems.map(this::convertToItemDto);
-    }
-
-    // 카테고리별 조회 (페이징 처리)
-    public Page<ItemDto> findByCategory(String category, Pageable pageable) {
-
-        Page<Item> findByCategory = itemRepository.findByCategory(category, pageable);
-
-        return findByCategory.map(this::convertToItemDto);
     }
 
     // 아이템 검색
@@ -80,6 +72,14 @@ public class ItemService {
         Page<Item> findBySearch = itemRepository.findByItemnameContaining(keyword, pageable);
 
         return findBySearch.map(this::convertToItemDto);
+    }
+
+    // 카테고리별 조회 (페이징 처리)
+    public Page<ItemDto> findByCategory(String category, Pageable pageable) {
+
+        Page<Item> findByCategory = itemRepository.findByCategory(category, pageable);
+
+        return findByCategory.map(this::convertToItemDto);
     }
 
     // 카테고리내에서 아이템 검색
