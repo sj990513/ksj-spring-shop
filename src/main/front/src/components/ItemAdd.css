@@ -1,0 +1,52 @@
+.item-add-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  .item-add-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .item-add-form .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .item-add-form .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .item-add-form .form-group input,
+  .item-add-form .form-group select,
+  .item-add-form .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .item-add-form .form-group textarea {
+    resize: vertical;
+  }
+  
+  .iasubmit-btn {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .iasubmit-btn:hover {
+    background-color: #0056b3;
+  }

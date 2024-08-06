@@ -13,6 +13,7 @@ import Checkout from './components/Checkout';
 import KakaoPaySuccess from './components/KakaoPaySuccess';
 import KakaoPayCancel from './components/KakaoPayCancel';
 import KakaoPayFail from './components/KakaoPayFail';
+import AdminPage from './components/AdminPage';
 
 const onNaverLogin = () => {
   window.location.href = "http://localhost:8080/oauth2/authorization/naver";
@@ -53,6 +54,9 @@ function App() {
                         <li>
                           <NavLink to="/item-list" activeClassName="active">상품목록</NavLink>
                         </li>
+                        <li>
+                          <NavLink to="/admin" activeClassName="active">관리자페이지</NavLink>
+                        </li>
                         <div className="right-align">
                           <Logout />
                         </div>
@@ -74,6 +78,7 @@ function App() {
             <Route path="/payment/:orderId/success" component={KakaoPaySuccess} />
             <Route path="/payment/:orderId/cancel" component={KakaoPayCancel} />
             <Route path="/payment/:orderId/fail" component={KakaoPayFail} />
+            <Route path="/admin" component={AdminPage} />
           </Switch>
         </div>
       </Router>

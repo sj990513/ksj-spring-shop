@@ -94,6 +94,12 @@ const Cart = () => {
     history.push('/checkout/address', { amount: totalPrice, itemName, orderId });
   };
 
+  const getFirstImageUrl = (imageUrls) => {
+    if (!imageUrls) return ''; // Return an empty string if imageUrls is null or undefined
+    const urls = imageUrls.split(',');
+    return urls[0];
+  };
+
   return (
     <div className="cart">
       <h2>장바구니</h2>
@@ -118,7 +124,7 @@ const Cart = () => {
             </div>
             {item.imageUrl && (
               <div className="form-group">
-                <img src={item.imageUrl} alt={item.itemName} className="cart-item-image" />
+                <img src={getFirstImageUrl(item.imageUrl)} alt={item.itemName} className="cart-item-image" />
               </div>
             )}
             <button onClick={() => handleDeleteItem(item.id)} className="button delete-btn">항목 삭제</button>

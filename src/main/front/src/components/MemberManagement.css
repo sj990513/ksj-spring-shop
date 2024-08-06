@@ -1,0 +1,159 @@
+.member-management-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  .member-management-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .search-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .search-container input {
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .search-container button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .mem-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+    background-color: #f1f1f1;
+  }
+  
+  .mem-labels span {
+    flex: 1;
+    padding: 0 10px;
+    text-align: center;
+  }
+  
+  .members-list {
+    margin-top: 20px;
+  }
+  
+  .mem-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+    width: 95%;
+    max-width: 1000px; /* 최대 너비 설정 */
+  }
+  
+  .member-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .member-info span {
+    flex: 1;
+    padding: 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+  }
+  
+  .member-actions {
+    display: flex;
+    align-items: center; /* 버튼을 수직 정렬 */
+    gap: 10px;
+  }
+  
+  .member-actions button {
+    padding: 10px; /* 동일한 크기로 설정 */
+    width: 60px; /* 동일한 너비 설정 */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    text-align: center; /* 버튼 텍스트 중앙 정렬 */
+    font-size: 16px; /* 버튼 텍스트 크기 설정 */
+  }
+  
+  .update-btn {
+    background-color: #4CAF50; /* 수정 버튼 색상 */
+  }
+  
+  .delete-btn {
+    background-color: #ff4d4d; /* 삭제 버튼 색상 */
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pagination button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    margin: 0 10px;
+  }
+  
+  .pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .pagination span {
+    margin: 0 10px;
+  }
+
+  .member-info select {
+    padding: 8px; /* 패딩 추가 */
+    padding-right: 30px; /* 텍스트와 화살표 사이에 충분한 공간 */
+    border: 1px solid #ddd; /* 테두리 색상 */
+    border-radius: 5px; /* 둥근 모서리 */
+    background-color: #fff; /* 배경 색상 */
+    font-size: 16px; /* 폰트 크기 */
+    color: #333; /* 폰트 색상 */
+    cursor: pointer; /* 커서 포인터로 변경 */
+    appearance: none; /* 기본 화살표 제거 */
+    -webkit-appearance: none; /* 크롬, 사파리용 기본 화살표 제거 */
+    -moz-appearance: none; /* 파이어폭스용 기본 화살표 제거 */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); /* 커스텀 화살표 아이콘 */
+    background-repeat: no-repeat; /* 화살표 반복 없음 */
+    background-position: right 10px center; /* 화살표 위치 */
+  }
+  
+  .member-info select:focus {
+    border-color: #007bff; /* 포커스 시 테두리 색상 변경 */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* 포커스 시 그림자 효과 */
+    outline: none; /* 포커스 시 아웃라인 제거 */
+  }

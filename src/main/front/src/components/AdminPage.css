@@ -1,0 +1,93 @@
+.adminpage-container {
+    display: flex;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 40px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  .sidebar {
+    width: 200px;
+    border-right: 1px solid #ddd;
+    padding-right: 20px;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    padding: 10px 0;
+    cursor: pointer;
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .sidebar ul li:hover,
+  .sidebar ul li.active {
+    text-decoration: underline;
+    color: #0056b3;
+  }
+  
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  /* Additional styles for Dashboard and other components */
+  
+  .dashboard-container {
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+  }
+  
+  .dashboard-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .dashboard-section {
+    margin-bottom: 30px;
+  }
+  
+  .admembers-box,
+  .adorders-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    justify-content: flex-start;
+  }
+  
+  .admember-item,
+  .adorder-item {
+    flex: 1 1 calc(25% - 20px); /* 4 items per row */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+    box-sizing: border-box;
+    max-width: calc(25% - 20px); 
+  }
+  
+  .admember-item {
+    font-size: 16px;
+  }
+  
+  .adorder-item div {
+    margin-bottom: 10px;
+  }
+  

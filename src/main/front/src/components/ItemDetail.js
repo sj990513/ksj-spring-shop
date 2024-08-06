@@ -10,6 +10,7 @@ const ItemDetail = () => {
   const [itemDetail, setItemDetail] = useState(null);
   const [activeTab, setActiveTab] = useState('reviews');
   const [count, setCount] = useState(1);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // State for image carousel
 
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const history = useHistory();
@@ -82,21 +83,34 @@ const ItemDetail = () => {
     }
   };
 
+  const handleNextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % itemImages.length);
+  };
+
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + itemImages.length) % itemImages.length);
+  };
+
   if (!itemDetail) {
     return <div>Loading...</div>;
   }
 
   const { itemDto } = itemDetail;
+  const itemImages = itemDto.imageUrl.split(',');
 
   return (
     <div className="item-detail-container">
-      <img src={itemDto.imageUrl} alt={itemDto.itemname} className="item-detail-image" />
+      <div className="image-carousel">
+        <button className="carousel-arrow left-arrow" onClick={handlePrevImage}>&#10094;</button>
+        <img src={itemImages[currentImageIndex]} alt={itemDto.itemname} className="item-detail-image" />
+        <button className="carousel-arrow right-arrow" onClick={handleNextImage}>&#10095;</button>
+      </div>
       <h2>{itemDto.itemname}</h2>
       <p>{itemDto.description}</p>
       <p><strong>가격:</strong> {itemDto.price}원</p>
       <p><strong>남은수량:</strong> {itemDto.stock}개</p>
-      <br></br>
-      <br></br>
+      <br />
+      <br />
       <div className="quantity-container">
         <label htmlFor="quantity">수량:</label>
         <input
@@ -110,8 +124,8 @@ const ItemDetail = () => {
       </div>
       <button className="add-to-cart-btn" onClick={handleAddToCart}>장바구니에 추가</button>
       <button className="order-now-btn" onClick={handleOrderNow}>즉시 주문</button>
-      <br></br>
-      <br></br>
+      <br />
+      <br />
       <div className="tab-container">
         <button className={`tab ${activeTab === 'reviews' ? 'active' : ''}`} onClick={() => setActiveTab('reviews')}>
           리뷰

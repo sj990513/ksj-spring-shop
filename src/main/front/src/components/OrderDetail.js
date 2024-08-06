@@ -87,6 +87,12 @@ const OrderDetail = ({ fetchOrders }) => {
     history.push(`/checkout/payment-method/${orderId}`, { amount: totalPrice, itemName, orderId });
   };
 
+  const getFirstImageUrl = (imageUrls) => {
+    if (!imageUrls) return ''; // Return an empty string if imageUrls is null or undefined
+    const urls = imageUrls.split(',');
+    return urls[0];
+  };
+
   if (!order) {
     return <div>Loading...</div>;
   }
@@ -120,7 +126,7 @@ const OrderDetail = ({ fetchOrders }) => {
             <span className="bold-text">{item.count}개</span>
           </div>
           <div className="form-group">
-            <img src={item.imageUrl} alt={item.itemName} className="product-image" />
+            <img src={getFirstImageUrl(item.imageUrl)} alt={item.itemName} className="product-image" />
           </div>
         </div>
       )) : <p>주문 상품 정보가 없습니다.</p>}

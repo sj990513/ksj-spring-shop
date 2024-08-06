@@ -53,6 +53,12 @@ const ItemList = () => {
     }
   };
 
+  const getFirstImageUrl = (imageUrls) => {
+    if (!imageUrls) return ''; // Return an empty string if imageUrls is null or undefined
+    const urls = imageUrls.split(',');
+    return urls[0];
+  };
+
   return (
     <div className="item-list-container">
       <h2>상품 목록</h2>
@@ -76,7 +82,7 @@ const ItemList = () => {
         {items.map((item) => (
           <div key={item.id} className="item">
             <Link to={`/item-detail/${item.id}`}>
-              <img src={item.imageUrl} alt={item.itemname} className="item-image" />
+              <img src={getFirstImageUrl(item.imageUrl)} alt={item.itemname} className="item-image" />
               <p className="item-name">{item.itemname}</p>
               <p className="item-price">
                 <strong>가격:</strong> {item.price}원
