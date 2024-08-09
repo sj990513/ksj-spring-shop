@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axiosInstance from '../axiosInstance';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import Reviews from './Reviews';
 import Qna from './Qna';
@@ -10,19 +10,18 @@ const ItemDetail = () => {
   const [itemDetail, setItemDetail] = useState(null);
   const [activeTab, setActiveTab] = useState('reviews');
   const [count, setCount] = useState(1);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // State for image carousel
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, user } = useContext(AuthContext);
   const history = useHistory();
   const { itemId } = useParams();
+  const location = useLocation();
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
         await axiosInstance.get('/check-auth');
-        setIsLoggedIn(true);
       } catch (error) {
-        setIsLoggedIn(false);
         alert("로그인해주세요");
         history.push('/login');
       }
@@ -42,7 +41,15 @@ const ItemDetail = () => {
     } else {
       fetchItemDetail();
     }
-  }, [isLoggedIn, history, itemId, setIsLoggedIn]);
+  }, [isLoggedIn, history, itemId]);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const qnaId = queryParams.get('qnaId');
+    if (qnaId) {
+      setActiveTab('qna');
+    }
+  }, [location]);
 
   const handleAddToCart = async () => {
     try {
@@ -75,7 +82,7 @@ const ItemDetail = () => {
       const totalAmount = itemDetail.itemDto.price * count;
       const itemName = itemDetail.itemDto.itemname;
       const response = await axiosInstance.post('/orders/order-now', orderRequest);
-      const { id } = response.data; // Assuming the response contains the order id
+      const { id } = response.data;
       history.push('/checkout/address', { amount: totalAmount, itemName, orderId: id });
     } catch (error) {
       console.error('There was an error placing the order!', error);
@@ -89,6 +96,24 @@ const ItemDetail = () => {
 
   const handlePrevImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex - 1 + itemImages.length) % itemImages.length);
+  };
+
+  const handleEditItem = () => {
+    history.push(`/admin/item-edit/${itemId}`);
+  };
+
+  const handleDeleteItem = async () => {
+    const isConfirmed = window.confirm('정말로 이 아이템을 삭제하시겠습니까?');
+    if (isConfirmed) {
+      try {
+        await axiosInstance.delete(`/admin/item-list/${itemId}/delete-item`);
+        alert('아이템이 성공적으로 삭제되었습니다.');
+        history.push('/item-list');
+      } catch (error) {
+        console.error('There was an error deleting the item!', error);
+        alert('아이템 삭제에 실패했습니다.');
+      }
+    }
   };
 
   if (!itemDetail) {
@@ -108,7 +133,7 @@ const ItemDetail = () => {
       <h2>{itemDto.itemname}</h2>
       <p>{itemDto.description}</p>
       <p><strong>가격:</strong> {itemDto.price}원</p>
-      <p><strong>남은수량:</strong> {itemDto.stock}개</p>
+      <p><strong>재고:</strong> {itemDto.stock}개</p>
       <br />
       <br />
       <div className="quantity-container">
@@ -126,6 +151,15 @@ const ItemDetail = () => {
       <button className="order-now-btn" onClick={handleOrderNow}>즉시 주문</button>
       <br />
       <br />
+      {user?.role === 'ROLE_ADMIN' && (
+        <>
+          <button className="edit-item-btn" onClick={handleEditItem}>상품 수정하기</button>
+          <button className="delete-item-btn" onClick={handleDeleteItem}>상품 삭제하기</button>
+        </>
+      )}
+      <br/>
+      <br/>
+      <br/>
       <div className="tab-container">
         <button className={`tab ${activeTab === 'reviews' ? 'active' : ''}`} onClick={() => setActiveTab('reviews')}>
           리뷰

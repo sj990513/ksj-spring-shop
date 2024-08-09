@@ -7,18 +7,23 @@ import Dashboard from './Dashboard';
 import MemberManagement from './MemberManagement';
 import ItemManagement from './ItemManagement';
 import ItemAdd from './ItemAdd';
+import QnaManagement from './QnaManagement';
 
 const AdminPage = () => {
   const [adminData, setAdminData] = useState(null);
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, user, setIsLoggedIn } = useContext(AuthContext); // user를 추가로 가져옴
   const history = useHistory();
   const location = useLocation();
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        await axiosInstance.get('/check-auth');
+        const response = await axiosInstance.get('/check-auth');
         setIsLoggedIn(true);
+        if (response.data.role !== 'ROLE_ADMIN') {
+          alert('접근 권한이 없습니다.');
+          history.push('/'); // 권한이 없으면 메인 페이지로 리다이렉트
+        }
       } catch (error) {
         setIsLoggedIn(false);
         alert("로그인해주세요");
@@ -38,9 +43,14 @@ const AdminPage = () => {
     if (!isLoggedIn) {
       checkAuth();
     } else {
-      fetchAdminData();
+      if (user && user.role !== 'ROLE_ADMIN') {
+        alert('접근 권한이 없습니다.');
+        history.push('/'); // 권한이 없으면 메인 페이지로 리다이렉트
+      } else {
+        fetchAdminData();
+      }
     }
-  }, [isLoggedIn, history, setIsLoggedIn]);
+  }, [isLoggedIn, user, history, setIsLoggedIn]);
 
   if (!adminData) {
     return <div>Loading...</div>;
@@ -52,7 +62,8 @@ const AdminPage = () => {
         <ul>
           <li className={location.pathname === '/admin/dashboard' ? 'active' : ''} onClick={() => history.push('/admin/dashboard')}>대시보드</li>
           <li className={location.pathname === '/admin/member-management' ? 'active' : ''} onClick={() => history.push('/admin/member-management')}>회원 관리</li>
-          <li className={location.pathname === '/admin/menu2' ? 'active' : ''} onClick={() => history.push('/admin/menu2')}>아이템 관리</li>
+          <li className={location.pathname === '/admin/item-management' ? 'active' : ''} onClick={() => history.push('/admin/item-management')}>아이템 관리</li>
+          <li className={location.pathname === '/admin/qna-management' ? 'active' : ''} onClick={() => history.push('/admin/qna-management')}>Q&A 관리</li>
         </ul>
       </div>
       <div className="content">
@@ -63,8 +74,11 @@ const AdminPage = () => {
           <Route path="/admin/member-management">
             <MemberManagement />
           </Route>
-          <Route path="/admin/menu2">
+          <Route path="/admin/item-management">
             <ItemManagement />
+          </Route>
+          <Route path="/admin/qna-management">
+            <QnaManagement />
           </Route>
           <Route path="/admin/item-list/add-item">
             <ItemAdd />

@@ -1,0 +1,101 @@
+.qna-management-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  .qna-management-container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .qna-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+    background-color: #f1f1f1;
+  }
+  
+  .qna-labels span {
+    flex: 1;
+    padding: 0 10px;
+    text-align: center;
+  }
+  
+  .qna-list {
+    margin-top: 20px;
+  }
+  
+  .qna-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+  }
+  
+  .qna-row span {
+    flex: 1;
+    padding: 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+  }
+  
+  .qna-title {
+    font-weight: bold;
+  }
+  
+  .qna-content {
+    max-width: 300px;
+  }
+  
+  .qna-answer {
+    max-width: 300px;
+  }
+  
+  .answered {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .unanswered {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pagination button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    margin: 0 10px;
+  }
+  
+  .pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .pagination span {
+    margin: 0 10px;
+  }

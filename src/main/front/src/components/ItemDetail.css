@@ -139,6 +139,7 @@
   border-radius: 4px;
 }
 
+.edit-item-btn,
 button {
   padding: 10px 20px;
   border: none;
@@ -164,6 +165,7 @@ button + button {
   color: #ddd;
 }
 
+.delete-item-btn,
 .delete-review-btn {
   background-color: red;
   color: white;

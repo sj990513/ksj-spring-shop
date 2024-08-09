@@ -8,27 +8,29 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
-  const { setIsLoggedIn } = useContext(AuthContext);
+  const { setIsLoggedIn, setUser } = useContext(AuthContext); // setUser를 가져옵니다.
 
-  const handleLogin = () => {
-    axiosInstance.post('/login', { username, password })
-      .then(response => {
-        console.log('Login successful!', response.data);
+  const handleLogin = async () => {
+    try {
+      const response = await axiosInstance.post('/login', { username, password });
 
-        // Store the access token in local storage
-        const accessToken = response.headers['access'];
-        localStorage.setItem('access', accessToken);
+      // Store the access token in local storage
+      const accessToken = response.headers['access'];
+      localStorage.setItem('access', accessToken);
 
-        // Update auth context
-        setIsLoggedIn(true);
+      // Fetch user info
+      const userInfoResponse = await axiosInstance.get('/check-auth'); // 로그인 후 사용자 정보를 받아옴
 
-        // Redirect to the main screen
-        history.push('/');
-      })
-      .catch(error => {
-        console.error('There was an error logging in!', error);
-        alert("로그인 실패. 아이디나 비밀번호를 확인해주세요.");
-      });
+      // Update auth context
+      setIsLoggedIn(true);
+      setUser(userInfoResponse.data); // 사용자 정보를 AuthContext에 저장
+
+      // Redirect to the main screen
+      history.push('/');
+    } catch (error) {
+      console.error('There was an error logging in!', error);
+      alert("로그인 실패. 아이디나 비밀번호를 확인해주세요.");
+    }
   };
 
   return (

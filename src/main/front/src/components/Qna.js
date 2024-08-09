@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axiosInstance from '../axiosInstance';
 import './ItemDetail.css';
+import { AuthContext } from '../context/AuthContext';
 
 const Qna = ({ itemId }) => {
   const [qnaTitle, setQnaTitle] = useState('');
@@ -8,6 +9,8 @@ const Qna = ({ itemId }) => {
   const [qnaList, setQnaList] = useState([]);
   const [qnaPage, setQnaPage] = useState(1);
   const [qnaTotalPages, setQnaTotalPages] = useState(1);
+  const [adminAnswers, setAdminAnswers] = useState({}); // State for admin answers
+  const { user } = useContext(AuthContext); // Get the current user from AuthContext
 
   useEffect(() => {
     fetchQnaList(1); // Fetch first page of Q&A
@@ -52,11 +55,40 @@ const Qna = ({ itemId }) => {
       alert('Q&A가 추가되었습니다.');
       setQnaTitle('');
       setQnaContent('');
-      // Refresh Q&A
       fetchQnaList(qnaPage);
     } catch (error) {
       console.error('There was an error adding the Q&A!', error);
       alert('Q&A 추가에 실패했습니다.');
+    }
+  };
+
+  const handleAnswerChange = (e, qnaId) => {
+    setAdminAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [qnaId]: e.target.value,
+    }));
+  };
+
+  const handleAnswerSubmit = async (qnaId) => {
+    const answer = adminAnswers[qnaId];
+    if (!answer || answer.trim() === '') {
+      alert('답변 내용을 입력해주세요.');
+      return;
+    }
+
+    try {
+      await axiosInstance.post(`/admin/item-list/${itemId}/qna/${qnaId}/answer-qna`, {
+        answer,
+      });
+      alert('답변이 추가되었습니다.');
+      setAdminAnswers((prevAnswers) => ({
+        ...prevAnswers,
+        [qnaId]: '',
+      }));
+      fetchQnaList(qnaPage);
+    } catch (error) {
+      console.error('There was an error adding the answer!', error);
+      alert('답변 추가에 실패했습니다.');
     }
   };
 
@@ -75,11 +107,24 @@ const Qna = ({ itemId }) => {
             <br />
             {qna.qnaAnswerDto ? (
               <>
-                <p><strong>답변:</strong> {qna.qnaAnswerDto.content}</p>
+                <p><strong>답변:</strong> {qna.qnaAnswerDto.answer}</p>
                 <p><strong>답변 작성일:</strong> {new Date(qna.qnaAnswerDto.createdate).toLocaleDateString()}</p>
               </>
             ) : (
-              <p>아직 답변이 존재하지 않습니다.</p>
+              <>
+                <p>아직 답변이 존재하지 않습니다.</p>
+                {user?.role === 'ROLE_ADMIN' && (
+                  <div className="admin-answer-form">
+                    <textarea
+                      placeholder="답변 내용을 입력하세요."
+                      value={adminAnswers[qna.qnaDto.id] || ''}
+                      onChange={(e) => handleAnswerChange(e, qna.qnaDto.id)}
+                      rows="4"
+                    />
+                    <button onClick={() => handleAnswerSubmit(qna.qnaDto.id)}>답변 달기</button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         ))
