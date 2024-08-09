@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import springshopksj.dto.MemberDto;
 import springshopksj.entity.Authnumber;
 import springshopksj.service.AuthService;
+import springshopksj.service.MemberService;
 
 import java.util.Map;
 import java.util.Random;
@@ -27,19 +28,25 @@ public class AuthController {
 
     private final DefaultMessageService messageService;
     private final AuthService authService;
+    private final MemberService memberService;
 
-    public AuthController(AuthService redisService, @Value("${sms.api}")String api, @Value("${sms.secret}")String secret) {
+    public AuthController(AuthService redisService, @Value("${sms.api}")String api, @Value("${sms.secret}")String secret, MemberService memberService) {
         // 반드시 계정 내 등록된 유효한 API 키, API Secret Key를 입력해주셔야 합니다!
 
         this.messageService = NurigoApp.INSTANCE.initialize(api, secret, "https://api.coolsms.co.kr");
         this.authService = redisService;
+        this.memberService = memberService;
     }
 
     // 로그인 상태 체크
     @GetMapping("/check-auth")
-    public ResponseEntity<String> checkAuth(@AuthenticationPrincipal UserDetails userDetails) {
-        if (userDetails != null) {
-            return new ResponseEntity<>("로그인 상태", HttpStatus.OK);
+    public ResponseEntity<?> checkAuth(@AuthenticationPrincipal UserDetails userDetails) {
+
+        //현재 로그인중인 사용자
+        MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        
+        if (memberDto != null) {
+            return new ResponseEntity<>(memberDto, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("비로그인 상태", HttpStatus.UNAUTHORIZED);
         }
