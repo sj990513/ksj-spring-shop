@@ -152,16 +152,6 @@ public class AdminController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-
-
-
-    //////////////여기부터 시작하면된다.
-
-
-
-
-
-
     // 아이템 수정 - 관리자만 가능
     /**
      * http://localhost:8080/admin/item-list/3/update
@@ -206,17 +196,17 @@ public class AdminController {
         return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
     }
 
-    // 상품에 대한 qna 조회
+
+    // 모든 qna 조회
     /**
-     * http://localhost:8080/admin/item-list/3/qna
+     * http://localhost:8080/admin/qna
      */
-    @GetMapping("/item-list/{itemId}/qna")
-    public ResponseEntity<?> itemQna(@RequestParam(value = "page", defaultValue = "1") int page,
-                                     @PathVariable(name = "itemId") long itemId) {
+    @GetMapping("/qna")
+    public ResponseEntity<?> itemQna(@RequestParam(value = "page", defaultValue = "1") int page) {
 
         PageRequest pageable = PageRequest.of(page-1 , Constants.PAGE_SIZE);
 
-        Page<QnaResponse> qnaResponses = itemService.getQnaResponses(itemId, pageable);
+        Page<QnaResponse> qnaResponses = itemService.getAllQnaResponses(pageable);
 
         return new ResponseEntity<>(qnaResponses, HttpStatus.OK);
     }
@@ -240,6 +230,18 @@ public class AdminController {
 
         return new ResponseEntity<>(answerDto, HttpStatus.OK);
     }
+
+
+
+
+
+    
+    //////////////여기부터 시작하면된다.t
+
+
+
+
+
 
     // 전체 주문조회
     @GetMapping("/order-list")

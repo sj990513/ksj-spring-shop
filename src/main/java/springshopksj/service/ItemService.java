@@ -171,6 +171,23 @@ public class ItemService {
         return  message;
     }
 
+    // 모든 qna와 qna_answer 리스트 - 페이징
+    public Page<QnaResponse> getAllQnaResponses(Pageable pageable) {
+        Page<Qna> qnaPage = qnaRepository.findAll(pageable);
+
+        return qnaPage.map(qna -> {
+            QnaDto qnaDto = convertToQnaDto(qna);
+            QnaAnswer qnaAnswer = qnaAnswerRepository.findByQnaID(qna.getID());
+            QnaAnswerDto qnaAnswerDto = null;
+
+            if (qnaAnswer != null) {
+                qnaAnswerDto = convertToQnaAnswerDto(qnaAnswer);
+            }
+
+            return new QnaResponse(qnaDto, qnaAnswerDto);
+        });
+    }
+
     // 상품에 대한 모든 qna와 qna_answer 리스트 - 페이징
     public Page<QnaResponse> getQnaResponses(long itemId, Pageable pageable) {
         Page<Qna> qnaPage = qnaRepository.findByItemID(itemId, pageable);
