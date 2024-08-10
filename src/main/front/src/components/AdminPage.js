@@ -8,6 +8,7 @@ import MemberManagement from './MemberManagement';
 import ItemManagement from './ItemManagement';
 import ItemAdd from './ItemAdd';
 import QnaManagement from './QnaManagement';
+import OrderMangement from './OrderManagement'
 
 const AdminPage = () => {
   const [adminData, setAdminData] = useState(null);
@@ -64,6 +65,7 @@ const AdminPage = () => {
           <li className={location.pathname === '/admin/member-management' ? 'active' : ''} onClick={() => history.push('/admin/member-management')}>회원 관리</li>
           <li className={location.pathname === '/admin/item-management' ? 'active' : ''} onClick={() => history.push('/admin/item-management')}>아이템 관리</li>
           <li className={location.pathname === '/admin/qna-management' ? 'active' : ''} onClick={() => history.push('/admin/qna-management')}>Q&A 관리</li>
+          <li className={location.pathname === '/admin/order-management' ? 'active' : ''} onClick={() => history.push('/admin/order-management')}>주문 관리</li>
         </ul>
       </div>
       <div className="content">
@@ -79,6 +81,9 @@ const AdminPage = () => {
           </Route>
           <Route path="/admin/qna-management">
             <QnaManagement />
+          </Route>
+          <Route path="/admin/order-management">
+            <OrderMangement />
           </Route>
           <Route path="/admin/item-list/add-item">
             <ItemAdd />

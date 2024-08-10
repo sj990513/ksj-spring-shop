@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, useLocation } from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
 import './MyPage.css';
 
 const OrderDetail = ({ fetchOrders }) => {
   const { orderId } = useParams();
   const history = useHistory();
+  const location = useLocation(); // useLocation을 통해 state 확인
   const [order, setOrder] = useState(null);
 
   useEffect(() => {
@@ -63,7 +64,7 @@ const OrderDetail = ({ fetchOrders }) => {
         await axiosInstance.patch(`/orders/${orderId}/cancel`);
         alert('주문이 취소되었습니다.');
         fetchOrders();  // 주문 목록을 다시 가져옵니다.
-        history.push('/mypage/order-status');  // 주문현황으로 이동
+        history.push(location.state?.from === 'order-management' ? '/admin/order-management' : '/mypage/order-status');
       } catch (error) {
         console.error('There was an error cancelling the order!', error);
         alert('주문 취소에 실패했습니다.');
@@ -101,15 +102,24 @@ const OrderDetail = ({ fetchOrders }) => {
 
   return (
     <div className="order-detail">
-      <button onClick={() => history.push('/mypage/order-status')} className="button back-btn">목록으로 돌아가기</button>
+      <button
+        onClick={() => history.push(location.state?.from === 'order-management' ? '/admin/order-management' : '/mypage/order-status')}
+        className="button back-btn"
+      >
+        목록으로 돌아가기
+      </button>
       <h3 className="order-details-header">
-        주문 상세 정보 {(orderDto.status === 'ORDERED') && (
+        주문 상세 정보 {(orderDto.status === 'ORDERED' || orderDto.status === 'PAID' ) && (
           <>
             <button onClick={handleCancelOrder} className="button cancel-btn">주문 취소</button>
             <button onClick={handleCheckout} className="button checkout-btn">결제하기</button>
           </>
         )}
       </h3>
+      <div className="form-group">
+        <label>주문 번호:</label>
+        <span className="bold-text">{orderDto.id}번</span>
+      </div>
       <h4>주문 상품 정보</h4>
       {orderItemDtos.length > 0 ? orderItemDtos.map((item) => (
         <div key={item.ID} className="order-item-detail">

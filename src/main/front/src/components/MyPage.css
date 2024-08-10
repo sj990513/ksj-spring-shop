@@ -473,3 +473,48 @@
   max-height: 300px;
   object-fit: cover;
 }
+
+.zzform-group {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #0a68b4;
+}
+
+.zzform-group-horizontal {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.zzform-group-horizontal label {
+  margin-right: 15px; 
+  font-weight: bold;
+  color: #0a68b4;
+  white-space: nowrap; 
+}
+
+.zzstatus-select {
+  padding: 5px 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  width: 150px !important;
+  margin-right: 10px; 
+}
+
+.zzupdate-btn {
+  margin-left: auto; 
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.zzupdate-btn:hover {
+  background-color: #0056b3;
+}

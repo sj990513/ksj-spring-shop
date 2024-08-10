@@ -8,7 +8,7 @@ const statusOptions = [
   { value: 'all', label: '모든 주문' },
   { value: 'ordered', label: '주문완료' },
   { value: 'paid', label: '결제완료' },
-  { value: 'cancle', label: '취소요청' },
+  { value: 'cancel', label: '취소요청' },
   { value: 'cancelled', label: '취소됨' },
   { value: 'shipped', label: '배송중' },
   { value: 'delivered', label: '배송완료' },
@@ -71,7 +71,7 @@ const OrderStatus = () => {
   };
 
   const handleOrderClick = (orderId) => {
-    history.push(`${url}/${orderId}`);
+    history.push(`${url}/${orderId}`, { from: 'order-status' });
   };
 
   return (
