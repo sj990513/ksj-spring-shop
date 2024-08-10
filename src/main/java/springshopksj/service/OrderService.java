@@ -360,8 +360,8 @@ public class OrderService {
         return orders.map(this::convertToOrderDto);
     }
 
-    // order status별 조회 - 페이징 처리
-    public Page<OrderDto> findByStatus(String status, Pageable pageable) {
+    // userId, order status별 조회 - 페이징 처리
+    public Page<OrderDto> findByUserIdAndStatus(MemberDto memberDto, String status, Pageable pageable) {
 
         Order.OrderStatus orderStatus;
 
@@ -374,7 +374,7 @@ public class OrderService {
                 orderStatus = Order.OrderStatus.PAID;
                 break;
 
-            case "cancle":
+            case "cancel":
                 orderStatus = Order.OrderStatus.CANCEL;
                 break;
 
@@ -387,6 +387,45 @@ public class OrderService {
                 break;
 
             case "delivered":
+                orderStatus = Order.OrderStatus.DELIVERED;
+                break;
+
+            default:
+                orderStatus = Order.OrderStatus.ORDERED;
+        }
+
+        Page<Order> findByCategory = orderRepository.findByStatusAndMemberId(memberDto.getID(), orderStatus, pageable);
+
+        return findByCategory.map(this::convertToOrderDto);
+    }
+
+    // order status별 조회 - 페이징 처리
+    public Page<OrderDto> findByStatus(String status, Pageable pageable) {
+
+        Order.OrderStatus orderStatus;
+
+        switch (status) {
+            case "ORDERED":
+                orderStatus = Order.OrderStatus.ORDERED;
+                break;
+
+            case "PAID":
+                orderStatus = Order.OrderStatus.PAID;
+                break;
+
+            case "CANCEL":
+                orderStatus = Order.OrderStatus.CANCEL;
+                break;
+
+            case "CANCELLED":
+                orderStatus = Order.OrderStatus.CANCELLED;
+                break;
+
+            case "SHIPPED":
+                orderStatus = Order.OrderStatus.SHIPPED;
+                break;
+
+            case "DELIVERED":
                 orderStatus = Order.OrderStatus.DELIVERED;
                 break;
 

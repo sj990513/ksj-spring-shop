@@ -26,6 +26,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT o FROM Order o WHERE o.status = :status ORDER BY o.ID DESC")
     Page<Order> findByStatus(@Param("status") Order.OrderStatus status, Pageable pageable);
 
+    // orderID 내림차순으로 정렬된 특정 사용자와 상태의 주문 목록을 조회
+    @Query("SELECT o FROM Order o WHERE o.status = :status AND o.member.ID = :userID ORDER BY o.ID DESC")
+    Page<Order> findByStatusAndMemberId(@Param("userID") long userID, @Param("status") Order.OrderStatus status, Pageable pageable);
+
     // 페이징x
     List<Order> findByStatus(Order.OrderStatus status);
 

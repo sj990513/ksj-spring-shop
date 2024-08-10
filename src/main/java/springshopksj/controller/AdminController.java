@@ -231,60 +231,25 @@ public class AdminController {
         return new ResponseEntity<>(answerDto, HttpStatus.OK);
     }
 
-
-
-
-
-    
-    //////////////여기부터 시작하면된다.t
-
-
-
-
-
-
     // 전체 주문조회
     @GetMapping("/order-list")
-    public ResponseEntity<?> allOrder(@RequestParam(value = "page", defaultValue = "1") int page) {
+    public ResponseEntity<?> allOrder(@RequestParam(value = "page", defaultValue = "1") int page,
+                                      @RequestParam(value = "status", defaultValue = "ALL") String status) {
 
         PageRequest pageable = PageRequest.of(page-1 , Constants.PAGE_SIZE);
 
-        Page<OrderDto> allOrderList = orderService.findAllOrders(pageable);
+        Page<OrderDto> allOrderList;
 
-        // 페이지 객체 자체를 전달해 전체 페이지 수, 총 요소 수, 현재 페이지 번호 등의 메타데이터도 클라이언트에 전달
+        if (status.equals("ALL")) {
+            allOrderList = orderService.findAllOrders(pageable);
+        }
+        else {
+            allOrderList = orderService.findByStatus(status, pageable);
+        }
+
+
         return new ResponseEntity<>(allOrderList, HttpStatus.OK);
     }
-
-    // status별 주문조회
-    /**
-     * http://localhost:8080/admin/order-list/ordered
-     *
-     * status : ordered, paid, cancelled, shipped, delivered
-     */
-    @GetMapping("/order-list/category/{status}")
-    public ResponseEntity<?> orderByStatus(@RequestParam(value = "page", defaultValue = "1") int page,
-                                           @PathVariable(name="status") String status) {
-
-        MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-
-        PageRequest pageable = PageRequest.of(page-1 , Constants.PAGE_SIZE);
-
-        Page<OrderDto> statusOrderList = orderService.findByStatus(status, pageable);
-
-        // 페이지 객체 자체를 전달해 전체 페이지 수, 총 요소 수, 현재 페이지 번호 등의 메타데이터도 클라이언트에 전달
-        return new ResponseEntity<>(statusOrderList, HttpStatus.OK);
-    }
-
-    // 특정 주문 조회
-    /**
-     * http://localhost:8080/admin/order-list/3
-     */
-    @GetMapping("/order-list/{orderId}")
-    public ResponseEntity<?> getOrder(@PathVariable(name="orderId") Long orderId) {
-        OrderDto orderDto = orderService.getOrderById(orderId);
-        return new ResponseEntity<>(orderDto, HttpStatus.OK);
-    }
-
 
     // 주문상태 업데이트 ex) 배송중 -> 배송완료 - 관리자
     /**
@@ -294,7 +259,7 @@ public class AdminController {
      *  "status" : "SHIPPED"
      * }
      *
-     * status : CANCELLED, SHIPPED, DELIVERED (3가지만허용),
+     * status : CANCEL, PAID, SHIPPED(3가지만허용),
      */
     @PatchMapping("/order-list/{orderId}/update-status")
     public ResponseEntity<?> updateOrderStatus(@PathVariable(name="orderId") Long orderId,
@@ -302,8 +267,24 @@ public class AdminController {
 
         OrderDto updateOrderDto = orderService.updateOrderStatus(orderId, orderDto.getStatus());
 
+
         return new ResponseEntity<>(updateOrderDto, HttpStatus.OK);
     }
+
+
+
+
+
+
+    //////////////여기부터 시작하면된다.t
+
+
+
+
+
+
+
+    
 
     // 전체 배달정보 조회
     @GetMapping("/delivery-list")

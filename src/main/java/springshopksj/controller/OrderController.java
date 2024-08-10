@@ -45,7 +45,7 @@ public class OrderController {
             orders = orderService.getOrdersByUserId(memberDto, pageable);
 
         else {
-            orders = orderService.findByStatus(status, pageable);
+            orders = orderService.findByUserIdAndStatus(memberDto, status, pageable);
         }
 
         return new ResponseEntity<>(orders, HttpStatus.OK);
@@ -67,9 +67,9 @@ public class OrderController {
 
     // 주문취소 - 결제전 주문 상태때만 취소가능
     /**
-     * http://localhost:8080/orders/3/cancle
+     * http://localhost:8080/orders/3/cancel
      */
-    @PatchMapping("/{orderId}/cancle")
+    @PatchMapping("/{orderId}/cancel")
     public ResponseEntity<?> cancelOrder(@PathVariable(name="orderId") Long orderId) {
         orderService.cancelOrder(orderId);
         return new ResponseEntity<>("주문취소", HttpStatus.OK);
