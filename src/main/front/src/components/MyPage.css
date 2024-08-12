@@ -518,3 +518,10 @@
 .zzupdate-btn:hover {
   background-color: #0056b3;
 }
+
+
+.review-notice {
+  font-size: 0.9em;
+  color: #555;
+  margin-bottom: 10px;
+}

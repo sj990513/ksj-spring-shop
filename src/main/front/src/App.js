@@ -8,13 +8,20 @@ import Logout from './components/Logout';
 import MyPage from './components/MyPage';
 import ItemList from './components/ItemList';
 import ItemDetail from './components/ItemDetail';
-import ItemEdit from './components/ItemEdit'; 
+import ItemEdit from './components/ItemEdit';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 import Checkout from './components/Checkout';
 import KakaoPaySuccess from './components/KakaoPaySuccess';
 import KakaoPayCancel from './components/KakaoPayCancel';
 import KakaoPayFail from './components/KakaoPayFail';
 import AdminPage from './components/AdminPage';
+
+const onNaverLogin = () => {
+
+  window.location.href = "http://localhost:8080/oauth2/authorization/naver"
+}
+
+
 
 function App() {
   return (
@@ -25,6 +32,9 @@ function App() {
             <ul>
               <li>
                 <NavLink exact to="/" activeClassName="active">메인</NavLink>
+              </li>
+              <li>
+                <NavLink to="/item-list" activeClassName="active">상품목록</NavLink>
               </li>
               <AuthContext.Consumer>
                 {({ isLoggedIn, user }) => (
@@ -43,9 +53,6 @@ function App() {
                       <>
                         <li>
                           <NavLink to="/mypage" activeClassName="active">마이페이지</NavLink>
-                        </li>
-                        <li>
-                          <NavLink to="/item-list" activeClassName="active">상품목록</NavLink>
                         </li>
                         {user && user.role === 'ROLE_ADMIN' && (  // 관리자 권한 확인
                           <li>

@@ -3,6 +3,8 @@ import axiosInstance from '../axiosInstance';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import './Login.css'; // CSS 파일을 import합니다.
+import googleIcon from '../image/google.png';
+import naverIcon from '../image/naver.png';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -33,6 +35,14 @@ function Login() {
     }
   };
 
+  const onNaverLogin = () => {
+    window.location.href = "http://localhost:8080/oauth2/authorization/naver";
+  };
+
+  const onGoogleLogin = () => {
+    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+  };
+
   return (
     <div className="login-container">
       <h2>로그인</h2>
@@ -57,8 +67,19 @@ function Login() {
             required
           />
         </div>
-        <button type="submit" className="login-btn">로그인</button>
+        <button type="submit" className="qwerlogin-btn">로그인</button>
       </form>
+      <div className="oauth-buttons">
+        <button onClick={onGoogleLogin} className="oauth-btn google">
+          <img src={googleIcon} alt="Google" />
+          구글 로그인
+        </button>
+        <div></div>
+        <button onClick={onNaverLogin} className="oauth-btn naver">
+          <img src={naverIcon} alt="Naver" />
+          네이버 로그인
+        </button>
+      </div>
     </div>
   );
 }

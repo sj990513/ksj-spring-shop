@@ -43,10 +43,20 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         if (existData == null) {
 
+            String nickname = oAuth2Response.getName();
+            String uniqueNickname = nickname;
+            int suffix = 1;
+
+            // 닉네임이 중복될 경우 중복되지 않는 닉네임을 찾을 때까지 반복
+            while ( memberRepository.existsByNickname(uniqueNickname) ) {
+                uniqueNickname = nickname + suffix;
+                suffix++;
+            }
+
             Member member = Member.builder()
                     .username(username)
                     .email(oAuth2Response.getEmail())
-                    .nickname(oAuth2Response.getName())
+                    .nickname(uniqueNickname) // 중복되지 않는 닉네임 설정
                     .provider(oAuth2Response.getProvider())
                     .role(Member.Role.ROLE_USER)
                     .build();
@@ -55,7 +65,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
             MemberDto memberDto = MemberDto.builder()
                     .username(username)
-                    .nickname(oAuth2Response.getName())
+                    .nickname(uniqueNickname)
                     .provider(oAuth2Response.getProvider())
                     .role(Member.Role.ROLE_USER)
                     .build();
@@ -65,16 +75,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         else {
 
-            existData.setEmail(oAuth2Response.getEmail());
-            existData.setNickname(oAuth2Response.getName());
-
-            memberRepository.save(existData);
-
             MemberDto memberDto = MemberDto.builder()
                     .username(existData.getUsername())
-                    .nickname(oAuth2Response.getName())
+                    .nickname(existData.getNickname())
                     .role(existData.getRole())
-                    .provider(oAuth2Response.getProvider())
+                    .provider(existData.getProvider())
                     .build();
 
             return new CustomOAuth2User(memberDto);

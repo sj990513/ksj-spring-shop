@@ -10,8 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import springshopksj.dto.*;
 import springshopksj.entity.Order;
-import springshopksj.entity.QnaAnswer;
-import springshopksj.service.DeliveryService;
 import springshopksj.service.ItemService;
 import springshopksj.service.MemberService;
 import springshopksj.service.OrderService;
@@ -28,9 +26,6 @@ public class AdminController {
     private final MemberService memberService;
     private final OrderService orderService;
     private final ItemService itemService;
-    private final DeliveryService deliveryService;
-
-    //카카오페이 결제 만들기
 
     
     
@@ -270,80 +265,4 @@ public class AdminController {
 
         return new ResponseEntity<>(updateOrderDto, HttpStatus.OK);
     }
-
-
-
-
-
-
-    //////////////여기부터 시작하면된다.t
-
-
-
-
-
-
-
-    
-
-    // 전체 배달정보 조회
-    @GetMapping("/delivery-list")
-    public ResponseEntity<?> allDelivery(@RequestParam(value = "page", defaultValue = "1") int page) {
-
-        PageRequest pageable = PageRequest.of(page-1 , Constants.PAGE_SIZE);
-
-        Page<DeliveryDto> allDelivery = deliveryService.findAllDelivery(pageable);
-
-        // 페이지 객체 자체를 전달해 전체 페이지 수, 총 요소 수, 현재 페이지 번호 등의 메타데이터도 클라이언트에 전달
-        return new ResponseEntity<>(allDelivery, HttpStatus.OK);
-    }
-
-    // status별 배달정보 조회
-    /**
-     * http://localhost:8080/admin/delivery-list/ready
-     *
-     * status : ready, shipped, delivered, cancelled
-     */
-    @GetMapping("/delivery-list/category/{status}")
-    public ResponseEntity<?> deliveryByStatus(@RequestParam(value = "page", defaultValue = "1") int page,
-                                              @PathVariable(name="status") String status) {
-
-        PageRequest pageable = PageRequest.of(page-1 , Constants.PAGE_SIZE);
-
-        Page<DeliveryDto> statusDeliveryList = deliveryService.findByStatus(status, pageable);
-
-        // 페이지 객체 자체를 전달해 전체 페이지 수, 총 요소 수, 현재 페이지 번호 등의 메타데이터도 클라이언트에 전달
-        return new ResponseEntity<>(statusDeliveryList, HttpStatus.OK);
-    }
-
-    // 특정 배달정보 조회
-    /**
-     * http://localhost:8080/admin/delivery-list/3
-     */
-    @GetMapping("/delivery-list/{deliveryId}")
-    public ResponseEntity<?> getDelivery(@PathVariable(name="deliveryId") Long deliveryId) {
-        DeliveryDto deliveryDto = deliveryService.getDeliveryById(deliveryId);
-
-        return new ResponseEntity<>(deliveryDto, HttpStatus.OK);
-    }
-
-    // 배달 정보 업데이트 ex) 배송중 -> 배송완료 - 관리자
-    /**
-     * http://localhost:8080/admin/orders/3/update-status
-     * DeliveryDto
-     * {
-     *  "status" : "READY"
-     * }
-     *
-     * status : READY, SHIPPED, DELIVERED, CANCLLED
-     */
-    @PatchMapping("/delivery-list/{deliveryId}/update-status")
-    public ResponseEntity<?> updateDeliveryStatus(@PathVariable(name="deliveryId") Long deliveryId,
-                                               @RequestBody DeliveryDto deliveryDto) {
-
-        deliveryService.updateDeliveryStatus(deliveryId, deliveryDto.getStatus());
-
-        return new ResponseEntity<>("변경완료", HttpStatus.OK);
-    }
-
 }

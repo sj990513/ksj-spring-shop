@@ -510,6 +510,10 @@ public class OrderService {
                 itemRepository.save(item);
             }
 
+            Delivery delivery = deliveryRepository.findByOrderID(orderId).get();
+            delivery.setStatus(Delivery.DeliveryStatus.CANCELLED);
+            deliveryRepository.save(delivery);
+
             order.setStatus(Order.OrderStatus.CANCELLED);
             orderRepository.save(order);
         }

@@ -181,6 +181,10 @@ const PersonalInfo = ({ userData, setUserData }) => {
   return (
     <div className="personal-info">
       <h2>개인정보</h2>
+      <p className="review-notice">
+        소셜 로그인시 개인정보 수정이 불가능합니다.
+      </p>
+      <br></br>
       <div className="user-info">
         <div className="form-group">
           <label><strong>아이디</strong></label>
@@ -300,7 +304,13 @@ const PersonalInfo = ({ userData, setUserData }) => {
         </div>
       ) : (
         <div className="button-group">
-          <button className="edit-btn" onClick={handleEdit}>수정하기</button>
+          <button 
+            className="edit-btn" 
+            onClick={handleEdit} 
+            disabled={userData.provider !== 'LOCAL'}  // provider가 LOCAL이 아닌 경우 비활성화
+          >
+            수정하기
+          </button>
           <button className="delete-btn" onClick={handleDelete}>회원 탈퇴</button>
         </div>
       )}

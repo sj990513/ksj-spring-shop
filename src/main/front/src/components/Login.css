@@ -1,53 +1,88 @@
-/* Login.css */
 .login-container {
-    max-width: 400px;
-    margin: 40px auto;
-    padding: 40px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-  }
-  
-  .login-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1em;
-  }
-  
-  .login-btn {
-    padding: 15px;
-    border: none;
-    border-radius: 4px;
-    font-size: 1em;
-    margin-top: 10px;
-    background-color: blue;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .login-btn:hover {
-    background-color: darkblue;
-  }
-  
-  .login-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 40px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.login-btn {
+  padding: 15px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1em;
+  margin-top: 10px;
+  color: white;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: skyblue;
+}
+
+.oauth-buttons {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;  /* Ensures even spacing between buttons */
+}
+
+.oauth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;  /* Adjusted for better spacing */
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  width: 100%;
+  height: 50px;  /* Ensures both buttons are the same height */
+  box-sizing: border-box;
+}
+
+.oauth-btn img {
+  margin-right: 10px;  /* Adjusted for better spacing */
+  height: 24px;  /* Uniform icon size */
+}
+
+.google {
+  background-color: white;
+  color: #4285f4;
+  border: 1px solid #4285f4;
+}
+
+.naver {
+  background-color: rgb(3, 187, 101);
+  color: white;
+  border: 1px solid rgb(3, 187, 101);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
