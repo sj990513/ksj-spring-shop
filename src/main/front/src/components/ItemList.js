@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
 import './ItemList.css';
 
@@ -17,17 +17,21 @@ const ItemList = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [totalPages, setTotalPages] = useState(1);
+  const location = useLocation();
 
   useEffect(() => {
-    fetchItems();
-  }, [page, search, category]);
+    const params = new URLSearchParams(location.search);
+    const categoryParam = params.get('category') || '';
+    setCategory(categoryParam);
+    fetchItems(categoryParam, page, search);
+  }, [location.search, page, search]);
 
-  const fetchItems = async () => {
+  const fetchItems = async (categoryParam = category, pageParam = page, searchParam = search) => {
     try {
-      const response = await axiosInstance.get(`/items/item-list${category ? `/${category}` : ''}`, {
+      const response = await axiosInstance.get(`/items/item-list${categoryParam ? `/${categoryParam}` : ''}`, {
         params: {
-          page: page,
-          search: search,
+          page: pageParam,
+          search: searchParam,
         },
       });
       setItems(response.data.content);
@@ -45,6 +49,7 @@ const ItemList = () => {
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
     setPage(1); // Reset to first page on category change
+    fetchItems(e.target.value, 1, search);
   };
 
   const handlePageChange = (newPage) => {

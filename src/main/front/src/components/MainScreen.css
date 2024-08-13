@@ -1,0 +1,145 @@
+.main-screen {
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.hero-section {
+    background-image: url('../image/main2.png');
+    background-size: 500px;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #333;
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.hero-section h1 {
+    font-size: 50px;
+    margin-bottom: 20px;
+}
+
+.hero-section p {
+    font-size: 33px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.categories-section {
+    margin-top: 50px;
+}
+
+.categories-section h2 {
+    margin-left: 20px; /* Add some space from the left */
+    font-size: 30px;
+    font-weight: bold;
+    color: #333;
+}
+
+.categories-section h3 {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.review-notice {
+    margin-left: 20px; /* Add some space from the left */
+    margin-top: 5px;
+    font-size: 14px;
+    color: #666;
+}
+
+.category-section {
+    margin-bottom: 50px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.product-slider-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.scroll-btn {
+    background-color: #ddd;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 20px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.scroll-btn.left {
+    left: 0;
+}
+
+.scroll-btn.right {
+    right: 0;
+}
+
+.product-slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    margin: 0 40px; 
+    justify-content: space-evenly; 
+}
+
+.product-slider::-webkit-scrollbar {
+    display: none;
+}
+
+.product-card {
+    flex: 0 0 18%; 
+    max-width: 18%;
+    margin-right: 10px; 
+    box-sizing: border-box; 
+}
+
+.product-card img {
+    display: block;
+    margin: 0 auto; 
+}
+
+.product-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.product-name, .product-price {
+    margin: 10px 0;
+    text-align: center;
+}
+
+.show-more-btn {
+    background-color: transparent; /* Transparent background */
+    border: none; /* Remove border */
+    color: #333; /* Text color */
+    text-align: left; /* Align text to the left */
+    padding: 20px 0; /* Add padding for spacing */
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 20px; /* Add some space from the left */
+    display: block; /* Make it a block-level element */
+    text-decoration: none; /* Ensure no underline by default */
+}
+
+.show-more-btn:hover {
+    text-decoration: underline; /* Underline the text on hover */
+}
+
+.footer {
+    text-align: center;
+    margin-top: 50px;
+}
