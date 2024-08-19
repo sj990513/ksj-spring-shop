@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
-import './MyPage.css';
+import './css/MyPage.css';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);

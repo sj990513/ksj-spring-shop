@@ -4,7 +4,7 @@ import { useHistory, useParams, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import Reviews from './Reviews';
 import Qna from './Qna';
-import './ItemDetail.css';
+import './css/ItemDetail.css';
 
 const ItemDetail = () => {
   const [itemDetail, setItemDetail] = useState(null);

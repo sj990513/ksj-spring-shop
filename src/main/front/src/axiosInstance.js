@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // axios 인스턴스 생성
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: process.env.REACT_APP_API_BASE_URL+"/api",
   withCredentials: true, // 요청에 쿠키를 포함
 });
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useHistory, useLocation, Switch, Route, Redirect } from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
 import { AuthContext } from '../context/AuthContext';
-import './AdminPage.css';
+import './css/AdminPage.css';
 import Dashboard from './Dashboard';
 import MemberManagement from './MemberManagement';
 import ItemManagement from './ItemManagement';

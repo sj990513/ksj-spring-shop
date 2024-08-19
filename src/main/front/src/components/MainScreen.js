@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import axiosInstance from '../axiosInstance';
 import { Link, useHistory } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import './MainScreen.css';
+import './css/MainScreen.css';
 
 function MainScreen() {
   const { user, setUser, setIsLoggedIn } = useContext(AuthContext);
@@ -75,7 +75,7 @@ function MainScreen() {
   return (
     <div className="main-screen">
       <div className="hero-section">
-        <h1>Spring-shop에 오신걸 환영합니다.</h1>
+        <h1>KSJ 쇼핑몰에 오신걸 환영합니다.</h1>
         <p>다양한 제품들을 살펴보세요!</p>
         <Link to="/item-list">
           <button className="shop-now-btn">쇼핑하기</button>
@@ -115,7 +115,7 @@ function MainScreen() {
       </div>
 
       <div className="footer">
-        <p>© 2024 KSJ store. All Rights Reserved.</p>
+        <p>© 2024 KSJ shop. All Rights Reserved.</p>
       </div>
     </div>
   );

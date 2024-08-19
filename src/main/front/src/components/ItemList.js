@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
-import './ItemList.css';
+import './css/ItemList.css';
 
 const categories = [
   { value: '', label: '모든상품' },

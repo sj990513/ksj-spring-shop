@@ -5,7 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import PersonalInfo from './PersonalInfo';
 import OrderStatus from './OrderStatus';
 import Cart from './Cart';
-import './MyPage.css';
+import './css/MyPage.css';
 
 const MyPage = () => {
   const [userData, setUserData] = useState(null);

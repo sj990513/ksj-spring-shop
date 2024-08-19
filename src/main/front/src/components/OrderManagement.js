@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory, useRouteMatch, Route, Switch } from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
 import OrderDetail from './OrderDetail';
-import './MyPage.css';
+import './css/MyPage.css';
 
 const statusOptions = {
     ORDERED: [

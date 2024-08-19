@@ -37,7 +37,7 @@ public class JWTFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         // /reissue url은 filter에 포함시키지않는다.
-        if (path.equals("/reissue")) {
+        if (path.equals("/api/reissue")) {
             filterChain.doFilter(request, response);
             return;
         }

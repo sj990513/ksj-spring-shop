@@ -22,13 +22,13 @@ const KakaoPaySuccess = () => {
       try {
         // 새로운 인스턴스를 만들어서 헤더에 token을 추가
         const customAxios = axios.create({
-          baseURL: 'http://localhost:8080',
+          baseURL: process.env.REACT_APP_API_BASE_URL,
           headers: {
             'access': token,
           },
         });
 
-        const response = await customAxios.get(`/payment/${orderId}/success?pg_token=${pgToken}`);
+        const response = await customAxios.get(`/api/payment/${orderId}/success?pg_token=${pgToken}`);
 
         if (response.status === 200) {
           alert('결제가 성공적으로 완료되었습니다.');

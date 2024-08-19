@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import axiosInstance from '../axiosInstance';
 import { AuthContext } from '../context/AuthContext';
-import './MyPage.css';
+import './css/MyPage.css';
 
 const PersonalInfo = ({ userData, setUserData }) => {
   const [isEditing, setIsEditing] = useState(false);

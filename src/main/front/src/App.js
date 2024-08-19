@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Switch, NavLink } from 'react-router-do
 import MainScreen from './components/MainScreen';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import FindId from './components/FindId';
+import FindPassword from './components/FindPassword';
 import Logout from './components/Logout';
 import MyPage from './components/MyPage';
 import ItemList from './components/ItemList';
@@ -15,12 +17,6 @@ import KakaoPaySuccess from './components/KakaoPaySuccess';
 import KakaoPayCancel from './components/KakaoPayCancel';
 import KakaoPayFail from './components/KakaoPayFail';
 import AdminPage from './components/AdminPage';
-
-const onNaverLogin = () => {
-
-  window.location.href = "http://localhost:8080/oauth2/authorization/naver"
-}
-
 
 
 function App() {
@@ -73,6 +69,8 @@ function App() {
             <Route exact path="/" component={MainScreen} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
+            <Route path="/find-id" component={FindId} />
+            <Route path="/find-password" component={FindPassword} />
             <Route path="/mypage" component={MyPage} />
             <Route path="/item-list" component={ItemList} />
             <Route path="/item-detail/:itemId" component={ItemDetail} />

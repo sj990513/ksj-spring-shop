@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.GenericFilterBean;
 import springshopksj.repository.RefreshRepository;
@@ -34,8 +35,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
 
         //path and method verify
         String requestUri = request.getRequestURI();
-        if (!requestUri.matches("^\\/logout$")) {
-
+        if (!requestUri.equals("/api/logout") || !request.getMethod().equals(HttpMethod.POST.name())) {
             filterChain.doFilter(request, response);
             return;
         }

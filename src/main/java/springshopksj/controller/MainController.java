@@ -41,7 +41,7 @@ public class MainController {
 
     private final MemberService memberService;
 
-    @GetMapping("/")
+    @GetMapping("/api")
     public ResponseEntity<?> getUserInfo() {
         //username전달
         MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());

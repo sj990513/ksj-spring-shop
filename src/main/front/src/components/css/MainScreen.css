@@ -4,7 +4,7 @@
 }
 
 .hero-section {
-    background-image: url('../image/main2.png');
+    background-image: url('../../image/main2.png');
     background-size: 500px;
     background-position: center;
     background-repeat: no-repeat;

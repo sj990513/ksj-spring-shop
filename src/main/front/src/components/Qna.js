@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axiosInstance from '../axiosInstance';
-import './ItemDetail.css';
+import './css/ItemDetail.css';
 import { AuthContext } from '../context/AuthContext';
 
 const Qna = ({ itemId }) => {

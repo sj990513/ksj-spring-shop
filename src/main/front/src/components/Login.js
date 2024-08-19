@@ -1,8 +1,9 @@
 import React, { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';  
 import axiosInstance from '../axiosInstance';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import './Login.css'; // CSS 파일을 import합니다.
+import './css/Login.css'; 
 import googleIcon from '../image/google.png';
 import naverIcon from '../image/naver.png';
 
@@ -10,24 +11,19 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const history = useHistory();
-  const { setIsLoggedIn, setUser } = useContext(AuthContext); // setUser를 가져옵니다.
+  const { setIsLoggedIn, setUser } = useContext(AuthContext);
 
   const handleLogin = async () => {
     try {
       const response = await axiosInstance.post('/login', { username, password });
 
-      // Store the access token in local storage
       const accessToken = response.headers['access'];
       localStorage.setItem('access', accessToken);
 
-      // Fetch user info
-      const userInfoResponse = await axiosInstance.get('/check-auth'); // 로그인 후 사용자 정보를 받아옴
-
-      // Update auth context
+      const userInfoResponse = await axiosInstance.get('/check-auth');
       setIsLoggedIn(true);
-      setUser(userInfoResponse.data); // 사용자 정보를 AuthContext에 저장
+      setUser(userInfoResponse.data);
 
-      // Redirect to the main screen
       history.push('/');
     } catch (error) {
       console.error('There was an error logging in!', error);
@@ -36,11 +32,11 @@ function Login() {
   };
 
   const onNaverLogin = () => {
-    window.location.href = "http://localhost:8080/oauth2/authorization/naver";
+    window.location.href = process.env.REACT_APP_OAUTH_NAVER_URL;
   };
 
   const onGoogleLogin = () => {
-    window.location.href = "http://localhost:8080/oauth2/authorization/google";
+    window.location.href = process.env.REACT_APP_OAUTH_GOOGLE_URL;
   };
 
   return (
@@ -69,6 +65,10 @@ function Login() {
         </div>
         <button type="submit" className="qwerlogin-btn">로그인</button>
       </form>
+      <div className="find-buttons">
+        <Link to="/find-id">아이디 찾기</Link>
+        <Link to="/find-password">비밀번호 찾기</Link>
+      </div>
       <div className="oauth-buttons">
         <button onClick={onGoogleLogin} className="oauth-btn google">
           <img src={googleIcon} alt="Google" />

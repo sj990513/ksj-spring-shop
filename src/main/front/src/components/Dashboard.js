@@ -1,5 +1,5 @@
 import React from 'react';
-import './AdminPage.css';
+import './css/AdminPage.css';
 
 const Dashboard = ({ adminData }) => (
   <div className="dashboard-container">

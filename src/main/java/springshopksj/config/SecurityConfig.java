@@ -4,6 +4,7 @@ package springshopksj.config;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,6 +27,7 @@ import springshopksj.utils.jwt.JWTFilter;
 import springshopksj.utils.jwt.JWTUtil;
 import springshopksj.utils.jwt.LoginFilter;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -38,6 +40,8 @@ public class SecurityConfig {
     private final RefreshRepository refreshRepository;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomSuccessHandler customSuccessHandler;
+    @Value("${front.url}")
+    private String frontUrl;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -62,7 +66,7 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        configuration.setAllowedOrigins(Arrays.asList(frontUrl, "https://www.ksjshop.shop"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
@@ -99,8 +103,8 @@ public class SecurityConfig {
         //권한관련은 나중에한번더체크
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login/**", "/", "/check-auth", "/signup", "/signup/**", "/reissue", "/items/item-list/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/find/**", "/api/login/**", "/api", "/api/check-auth", "/api/signup", "/api/signup/**", "/api/reissue", "/api/items/item-list/**").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().hasAnyRole("USER", "ADMIN"));
 
 

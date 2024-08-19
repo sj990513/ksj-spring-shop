@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
-import './MyPage.css';
+import './css/MyPage.css';
 
 const AddressForm = () => {
     const [address, setAddress] = useState('');

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
-import './ItemEdit.css';
+import './css/ItemEdit.css';
 
 const categories = [
   { value: 'top', label: '상의' },

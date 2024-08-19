@@ -5,6 +5,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -26,6 +27,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     private final JWTUtil jwtUtil;
     private final RefreshRepository refreshRepository;
+    @Value("${front.url}")
+    private String frontUrl;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -48,7 +51,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
          이로인해 프론트로 refresh token만 쿠키로 전송하고, 프론트에서 다시 refresh토큰을 이용해 access토큰을 재발급 받으면된다.
          */
         response.addCookie(createCookie("refresh", refresh));
-        response.sendRedirect("http://localhost:3000/");
+        response.sendRedirect(frontUrl);
 
         //Refresh 토큰 저장
         addRefreshEntity(username, refresh, 86400000L);

@@ -39,7 +39,7 @@ public class AuthController {
     }
 
     // 로그인 상태 체크
-    @GetMapping("/check-auth")
+    @GetMapping("/api/check-auth")
     public ResponseEntity<?> checkAuth(@AuthenticationPrincipal UserDetails userDetails) {
 
         //현재 로그인중인 사용자
@@ -53,7 +53,7 @@ public class AuthController {
     }
 
     // 문자인증
-    @PostMapping("/signup/send-code")
+    @PostMapping("/api/signup/send-code")
     public ResponseEntity<String> sendVerificationCode(@RequestBody Map<String, String> request) {
 
         String phoneNumber = request.get("phoneNumber");
@@ -78,14 +78,14 @@ public class AuthController {
         authService.saveAuthNumber(phoneNumber, verificationCode);
 
         //진짜 문자보낼땐 주석제거
-        //SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+        SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
 
         return new ResponseEntity<>("인증번호 전송!", HttpStatus.OK);
     }
 
 
     //문자인증확인
-    @PostMapping("/signup/auth")
+    @PostMapping("/api/signup/auth")
     public ResponseEntity<?> authCode(@RequestBody Map<String, String> request) {
         String phoneNumber = request.get("phoneNumber");
         String code = request.get("code");

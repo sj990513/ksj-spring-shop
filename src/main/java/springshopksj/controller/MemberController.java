@@ -1,5 +1,6 @@
 package springshopksj.controller;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +40,7 @@ public class MemberController {
      *     "address": "example"
      * }
      */
-    @PostMapping("/signup")
+    @PostMapping("/api/signup")
     public ResponseEntity<String> createUser(@RequestBody MemberDto memberDto) {
         String message = memberService.joinProcess(memberDto);
 
@@ -57,37 +58,68 @@ public class MemberController {
     }
 
     //아이디 중복검사
-    @GetMapping("/signup/check-username")
+    @GetMapping("/api/signup/check-username")
     public ResponseEntity<Boolean> checkUsername(@RequestParam(value="username") String username) {
         return new ResponseEntity<>(memberService.checkUsername(username), HttpStatus.OK);
     }
 
     //닉네임 중복검사
-    @GetMapping("/signup/check-nickname")
+    @GetMapping("/api/signup/check-nickname")
     public ResponseEntity<Boolean> checkNickname(@RequestParam(value="nickname") String nickname) {
         return new ResponseEntity<>(memberService.checkNickname(nickname), HttpStatus.OK);
     }
 
     //이메일 중복검사
-    @GetMapping("/signup/check-email")
+    @GetMapping("/api/signup/check-email")
     public ResponseEntity<Boolean> checkEmail(@RequestParam(value="email") String email) {
         return new ResponseEntity<>(memberService.checkEmail(email), HttpStatus.OK);
     }
 
     //핸드폰 중복검사
-    @GetMapping("/signup/check-phone")
+    @GetMapping("/api/signup/check-phone")
     public ResponseEntity<Boolean> checkPhone(@RequestParam(value="phone") String phone) {
         return new ResponseEntity<>(memberService.checkPhone(phone), HttpStatus.OK);
     }
 
     //마이페이지
-    @GetMapping("/user-info/user")
+    @GetMapping("/api/user-info/user")
     public ResponseEntity<?> myPage() {
         
         //현재 로그인중인 사용자
         MemberDto memberDto = memberService.fidnByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
         return new ResponseEntity<>(memberDto, HttpStatus.OK);
+    }
+
+    //아이디 찾기
+    /**
+     * memberDto
+     *{
+     *     "email": "example@example.com",
+     * }
+     */
+    @PostMapping("/api/find/findId")
+    public ResponseEntity<?> findId(@RequestBody MemberDto memberDto) {
+
+        String msg = memberService.findId(memberDto);
+
+        return new ResponseEntity<>(msg, HttpStatus.OK);
+    }
+
+    //비밀번호 찾기
+    /**
+     * memberDto
+     *{
+     *     "username": "example",
+     *     "email": "example@example.com"
+     * }
+     */
+    @PostMapping("/api/find/findPassword")
+    public ResponseEntity<?> findPassword(@RequestBody MemberDto memberDto) throws MessagingException {
+
+        String msg = memberService.findPassword(memberDto);
+
+        return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
     //마이페이지 수정
@@ -102,7 +134,7 @@ public class MemberController {
      *     "address": "example"
      * }
      */
-    @PatchMapping("/user-info/user/update")
+    @PatchMapping("/api/user-info/user/update")
     public ResponseEntity<?> updateInfo(@RequestBody MemberDto memberDto) {
 
         //현재 로그인중인 사용자
@@ -121,7 +153,7 @@ public class MemberController {
     }
 
     //회원삭제
-    @DeleteMapping("/user-info/user/delete-user")
+    @DeleteMapping("/api/user-info/user/delete-user")
     public ResponseEntity<?> deleteUser() {
 
         //현재 로그인중인 사용자

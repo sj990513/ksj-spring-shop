@@ -20,13 +20,13 @@ const KakaoPayCancel = () => {
       try {
         // 새로운 인스턴스를 만들어서 헤더에 token을 추가
         const customAxios = axios.create({
-          baseURL: 'http://localhost:8080',
+          baseURL: process.env.REACT_APP_API_BASE_URL,
           headers: {
             'access': token,
           },
         });
 
-        const response = await customAxios.get(`/payment/${orderId}/cancel`);
+        const response = await customAxios.get(`/api/payment/${orderId}/cancel`);
 
         if (response.status === 200) {
           const { amount, itemName } = response.data;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../axiosInstance';
-import './ItemDetail.css';
+import './css/ItemDetail.css';
 
 const Reviews = ({ itemId, itemDetail }) => {
   const [rating, setRating] = useState(0);

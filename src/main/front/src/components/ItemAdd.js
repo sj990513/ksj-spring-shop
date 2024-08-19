@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import axiosInstance from '../axiosInstance';
-import './ItemAdd.css';  // ItemAdd.css를 별도로 사용
+import './css/ItemAdd.css';  // ItemAdd.css를 별도로 사용
 
 const categories = [
   { value: 'top', label: '상의' },

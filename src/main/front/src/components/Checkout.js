@@ -5,7 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import AddressForm from './AddressForm';
 import PaymentMethod from './PaymentMethod';
 import KakaoPaySuccess from './KakaoPaySuccess';
-import './MyPage.css';
+import './css/MyPage.css';
 
 const Checkout = () => {
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);

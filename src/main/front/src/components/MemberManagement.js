@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../axiosInstance';
-import './MemberManagement.css';  // MemberManagement.css를 별도로 사용
+import './css/MemberManagement.css';  
 
 const MemberManagement = () => {
   const [members, setMembers] = useState([]);

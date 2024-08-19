@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axiosInstance from '../axiosInstance'; // axiosInstance를 import합니다.
-import './SignupPage.css'; // CSS 파일을 import합니다.
+import './css/SignupPage.css'; // CSS 파일을 import합니다.
 
 const SignupPage = () => {
   const history = useHistory();

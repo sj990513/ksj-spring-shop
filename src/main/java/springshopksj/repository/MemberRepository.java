@@ -26,6 +26,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> { //extend
     Boolean existsByPhone(String phone);
     Optional<Member> findByUsername(String username);
 
+    Optional<Member> findByEmail(String email);
+
     @Query("SELECT m FROM Member m WHERE m.username = :username")
     Member findByUsn(@Param("username") String username);
     @Query("SELECT m FROM Member m ORDER BY m.createDate DESC")

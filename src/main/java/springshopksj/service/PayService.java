@@ -32,9 +32,11 @@ public class PayService {
     static final String cid = "TC0ONETIME"; // 가맹점 테스트 코드
     static String partner_order_id = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
     static String partner_user_id = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-    @Value("${kakao.admin-key}") String admin_Key;
+    @Value("${kakao.admin-key}")
+    private String admin_Key;
+    @Value("${front.url}")
+    private String frontUrl;
     private KakaoReadyResponse kakaoReady;
-
     private final OrderRepository orderRepository;
     private final PaymentRepository paymentRepository;
     private final MemberRepository memberRepository;
@@ -107,9 +109,9 @@ public class PayService {
         parameters.add("total_amount", String.valueOf(order.getTotalprice()));
         parameters.add("vat_amount", "0");
         parameters.add("tax_free_amount", "0");
-        parameters.add("approval_url", "http://localhost:3000/payment/" + orderId + "/success?token=" + accessToken);  // 성공 시 redirect url
-        parameters.add("cancel_url", "http://localhost:3000/payment/" + orderId + "/cancel?token=" + accessToken);     // 취소 시 redirect url
-        parameters.add("fail_url", "http://localhost:3000/payment/" + orderId + "/fail?token=" + accessToken);         // 실패 시 redirect url
+        parameters.add("approval_url", frontUrl + "/payment/" + orderId + "/success?token=" + accessToken);  // 성공 시 redirect url
+        parameters.add("cancel_url", frontUrl + "/payment/" + orderId + "/cancel?token=" + accessToken);     // 취소 시 redirect url
+        parameters.add("fail_url", frontUrl + "/payment/" + orderId + "/fail?token=" + accessToken);         // 실패 시 redirect url
 
 
         // 파라미터, 헤더

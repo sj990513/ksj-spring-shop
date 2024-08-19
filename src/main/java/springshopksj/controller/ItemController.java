@@ -17,7 +17,7 @@ import springshopksj.utils.Constants;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/items")
+@RequestMapping("/api/items")
 public class ItemController {
 
     private final ItemService itemService;

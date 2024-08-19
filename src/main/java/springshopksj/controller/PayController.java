@@ -14,7 +14,7 @@ import springshopksj.service.PayService;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/payment")
+@RequestMapping("/api/payment")
 public class PayController {
 
     private final PayService payService;
