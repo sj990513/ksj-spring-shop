@@ -67,4 +67,12 @@
 
 ## 🛠️ 시스템 구성도
 ![SPRING SHOP drawio](https://github.com/user-attachments/assets/3c73ac2f-9cbe-4d51-92cc-9eb0c7fb1363)
+<br>
+
+## 🗂️ 데이터베이스 구조 (ERD)
+
+
+
+<br>
+## 기능 설명
 
