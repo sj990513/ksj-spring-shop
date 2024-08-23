@@ -55,6 +55,8 @@
   JWT, OAuth2 Client
 - **검증:**  
   Mail Starter, Nurigo SMS
+- **보안:**
+  Https 적용  
 
 ### Tools
 - **IDE / Editors:**  
