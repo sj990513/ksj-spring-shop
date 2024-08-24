@@ -70,9 +70,7 @@
 <br>
 
 ## 🗂️ 데이터베이스 구조 (ERD)
-
-
-
+![erd](https://github.com/user-attachments/assets/4bb689ad-dd85-4f84-99ee-5b8dfae43904)
 <br>
 
 ## 기능 설명
