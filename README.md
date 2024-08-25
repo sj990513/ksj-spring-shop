@@ -73,6 +73,170 @@
 ![erd](https://github.com/user-attachments/assets/4bb689ad-dd85-4f84-99ee-5b8dfae43904)
 <br>
 
+## 🔧 주요 이슈
+ ### oauth2 소셜 로그인
+ oauth2 소셜 로그인 진행시 header에 jwt access token을 직접 지급하지 못하는 현상이 발생  
+ front에서 refresh token만 cookie에 저장 후, cookie에 담긴 refresh token값을 이용해 서버에 재발급 요청(reissue)을 하여 해결
+  <details>
+    <summary><b> 1. oauth2 로그인시 서버에서 refresh token만을 cookie에 저장</b></summary>
+    
+```java
+    // CustomSuccessHandler.java 일부
+    @Override
+      public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+  
+          //OAuth2User
+          CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
+  
+          String username = customUserDetails.getUsername();
+  
+          Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+          Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
+          GrantedAuthority auth = iterator.next();
+          String role = auth.getAuthority();
+  
+  
+          String refresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
+  
+          response.addCookie(createCookie("refresh", refresh));
+          response.sendRedirect(frontUrl);
+  
+          //Refresh 토큰 저장
+          addRefreshEntity(username, refresh, 86400000L);
+      }
+  
+      private Cookie createCookie(String key, String value) {
+  
+          Cookie cookie = new Cookie(key, value);
+          cookie.setMaxAge(60*60*60);
+          cookie.setSecure(true);
+          cookie.setPath("/");
+          cookie.setHttpOnly(true);
+  
+          return cookie;
+      }
+```
+  </details>
+
+
+<details>
+    <summary><b> 2. front에서 서버로 reissue 요청 - header에 access token이 존재하지 않기때문에 자동으로 reissue 요청 진행.</b></summary>
+    
+```javascript
+    // axiosInstance.js 일부
+    axiosInstance.interceptors.response.use(
+      response => response,
+      async error => {
+        const originalRequest = error.config;
+    
+        // 에러 응답 상태가 401이고 재시도가 아니며 'access token expired'인 경우
+        if (error.response.status === 401 && !originalRequest._retry && error.response.data === 'access token expired') {
+          originalRequest._retry = true;
+    
+          try {
+            // 토큰 갱신 시도
+            const response = await axiosInstance.post('/reissue');
+            const newAccessToken = response.headers['access'];
+            localStorage.setItem('access', newAccessToken);
+            axiosInstance.defaults.headers.common['access'] = newAccessToken;
+    
+            // 새로운 토큰으로 원래 요청을 재시도
+            originalRequest.headers['access'] = newAccessToken;
+            return axiosInstance(originalRequest);
+          } catch (reissueError) {
+            console.error('토큰 갱신 실패', reissueError);
+    
+            // 갱신 토큰이 만료된 경우 액세스 토큰 제거 및 메인 페이지로 리디렉션
+            localStorage.removeItem('access');
+            window.location.href = '/';
+          }
+        }
+    
+        return Promise.reject(error);
+      }
+    );
+```
+  </details>
+
+  <details>
+    <summary><b> 3. /api/reissue로 요청이 들어오면 header에 access token 재발행 </b></summary>
+    
+```java
+    // ReissueController.java 일부
+    @PostMapping("/api/reissue")
+    public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response) {
+
+        // refresh token 받아오기
+        String refresh = null;
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+
+            if (cookie.getName().equals("refresh")) {
+
+                refresh = cookie.getValue();
+
+            }
+        }
+
+
+        if (refresh == null) {
+
+            //response status code
+            return new ResponseEntity<>("refresh token이 null값입니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        // 만료체크
+        try {
+            jwtUtil.isExpired(refresh);
+        } catch (ExpiredJwtException e) {
+
+            //response status code
+            return new ResponseEntity<>("refresh token 만료", HttpStatus.BAD_REQUEST);
+        }
+
+        // 토큰이 refresh인지 확인 (발급시 페이로드에 명시)
+        String category = jwtUtil.getCategory(refresh);
+
+        if (!category.equals("refresh")) {
+
+            //response status code
+            return new ResponseEntity<>("refresh token형식이 아닙니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        //DB에 저장되어 있는지 확인
+        Boolean isExist = refreshTokenService.existsByRefreshToken(refresh);
+
+        if (!isExist) {
+
+            //response body
+            return new ResponseEntity<>("refresh token이 db에 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+        String username = jwtUtil.getUsername(refresh);
+        String role = jwtUtil.getRole(refresh);
+
+        //make new JWT
+        String newAccess = jwtUtil.createJwt("access", username, role, 600000L);
+        String newRefresh = jwtUtil.createJwt("refresh", username, role, 86400000L);
+
+       log.info("access token 재발행 성공");
+
+        //Refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
+        refreshTokenService.deleteByRefreshToken(refresh);
+        addRefreshEntity(username, newRefresh, 86400000L);
+
+        //response
+        response.setHeader("access", newAccess);
+        response.addCookie(createCookie("refresh", newRefresh));
+
+        return new ResponseEntity<>("access토큰 재발행 성공", HttpStatus.OK);
+    }
+```
+  </details>
+
+<br>
+<br>
+
 ## 구현 - 사용자
 <br>
 
