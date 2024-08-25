@@ -79,8 +79,8 @@ https://ksjshop.shop
  ### oauth2 소셜 로그인
  oauth2 소셜 로그인 진행시 header에 jwt access token을 직접 지급하지 못하는 현상이 발생  
  front에서 refresh token만 cookie에 저장 후, cookie에 담긴 refresh token값을 이용해 서버에 재발급 요청(reissue)을 하여 해결
-  <details>
-    <summary><b> 1. oauth2 로그인시 서버에서 refresh token만을 cookie에 저장</b></summary>
+ 
+ <b> 1. oauth2 로그인시 서버에서 refresh token만을 cookie에 저장</b>
     
 ```java
     // CustomSuccessHandler.java 일부
@@ -118,11 +118,9 @@ https://ksjshop.shop
           return cookie;
       }
 ```
-  </details>
 
 
-<details>
-    <summary><b> 2. front에서 서버로 reissue 요청 - header에 access token이 존재하지 않기때문에 자동으로 reissue 요청 진행.</b></summary>
+<b> 2. front에서 서버로 reissue 요청 - header에 access token이 존재하지 않기때문에 자동으로 reissue 요청 진행.</b>
     
 ```javascript
     // axiosInstance.js 일부
@@ -158,10 +156,8 @@ https://ksjshop.shop
       }
     );
 ```
-  </details>
 
-  <details>
-    <summary><b> 3. /api/reissue로 요청이 들어오면 header에 access token 재발행 </b></summary>
+  <b> 3. /api/reissue로 요청이 들어오면 header에 access token 재발행 </b>
     
 ```java
     // ReissueController.java 일부
@@ -234,7 +230,6 @@ https://ksjshop.shop
         return new ResponseEntity<>("access토큰 재발행 성공", HttpStatus.OK);
     }
 ```
-  </details>
 
 <br>
 <br>
