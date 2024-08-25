@@ -237,7 +237,7 @@ https://ksjshop.shop
 ## 구현 - 사용자
 <br>
 
-### 1. 이메일 인증 & 핸드폰 인증
+### 1. 이메일 & 핸드폰 검증
 ![ksjshoperd drawio (1)](https://github.com/user-attachments/assets/61536be4-6a43-4760-8512-726d69bda796)
 <br>
 <br>
