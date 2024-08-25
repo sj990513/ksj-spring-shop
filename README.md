@@ -1,5 +1,7 @@
 # 🛒 spring-shop-ksj
 > 상품들을 조회, 구매 가능한 쇼핑몰 프로젝트입니다.
+
+https://ksjshop.shop
 <br>
 <br>
 
