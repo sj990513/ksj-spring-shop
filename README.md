@@ -74,6 +74,7 @@
 <br>
 
 ## 구현 - 사용자
+<br>
 
 ### 1. 이메일 인증 & 핸드폰 인증
 ![ksjshoperd drawio (1)](https://github.com/user-attachments/assets/61536be4-6a43-4760-8512-726d69bda796)
@@ -99,9 +100,21 @@
 <br>
 
 
-### 5. 
+### 5. 마이페이지 (개인정보수정, 주면현황 & 주문상세 조회, 장바구니 조회 & 결제)
 ![마이페이지 drawio](https://github.com/user-attachments/assets/8f71e7d0-c2b8-4409-8fe2-5d4e7675a088)
 <br>
 <br>
 
 
+## 구현 - 관리자
+<br>
+
+### 1. 대시보드, 주문관리 (주문상태변경), QnA 관리 (답변달기), 회원 관리 (회원 권한변경 & 삭제)
+![ㄱㄹㅈ1 drawio](https://github.com/user-attachments/assets/186f057d-e74e-436f-b97c-4e2d926bd33d)
+<br>
+<br>
+
+### 2. 상품 관리 (상품 조회, 수정, 삭제, 추가)
+![ㄱㄹㅈ2 drawio](https://github.com/user-attachments/assets/27c46457-4407-424f-a1d6-5f01931175d1)
+<br>
+<br>
