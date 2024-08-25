@@ -73,8 +73,35 @@
 ![erd](https://github.com/user-attachments/assets/4bb689ad-dd85-4f84-99ee-5b8dfae43904)
 <br>
 
-## 기능 설명
+## 구현 - 사용자
 
-### 이메일 인증 & 핸드폰 인증
+### 1. 이메일 인증 & 핸드폰 인증
+![ksjshoperd drawio (1)](https://github.com/user-attachments/assets/61536be4-6a43-4760-8512-726d69bda796)
+<br>
+<br>
+
+
+### 2. 소셜 로그인 & 카카오 페이 결제
+![ksjshoperd drawio](https://github.com/user-attachments/assets/23fb2c16-071c-4a7a-90d9-7d7066ba839b)
+<br>
+<br>
+
+
+### 3. 상품 정렬 (페이징처리)
+![상품리스트 drawio](https://github.com/user-attachments/assets/51677865-297c-4821-99bd-a0c1a02ba3a0)
+<br>
+<br>
+
+
+### 4. 상품 상세보기, 리뷰, QnA
+![tv상세보기 drawio](https://github.com/user-attachments/assets/14b1d46d-b28d-4d0c-9a52-632b32177c58)
+<br>
+<br>
+
+
+### 5. 
+![마이페이지 drawio](https://github.com/user-attachments/assets/8f71e7d0-c2b8-4409-8fe2-5d4e7675a088)
+<br>
+<br>
 
 
