@@ -1,7 +1,8 @@
 # 🛒 spring-shop-ksj
 > 상품들을 조회, 구매 가능한 쇼핑몰 프로젝트입니다.
 
-https://ksjshop.shop
+https://ksjshop.shop 
+(aws 비용문제로 배포중단)
 
 관리자 계정 체험 - 아이디 : qwer1234 / 비밀번호 : qwer1234
 <br>
